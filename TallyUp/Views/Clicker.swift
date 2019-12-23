@@ -10,22 +10,24 @@ import SwiftUI
 
 struct Clicker: View {
     var numTicks = 1
+    @EnvironmentObject var userData: UserData
     
     var body: some View {
         HStack {
-            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/) {
-                Text(/*@START_MENU_TOKEN@*/"Button"/*@END_MENU_TOKEN@*/)
+            Button(action: {self.userData.decrement(self.numTicks)}) {
+                Text("Decrement")
             }
             Spacer()
             Text(String(format: "%d - $%0.2f",self.numTicks,Double(self.numTicks)*0.5))
                 .font(.title)
                 .multilineTextAlignment(.center)
             Spacer()
-            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/) {
-                Text(/*@START_MENU_TOKEN@*/"Button"/*@END_MENU_TOKEN@*/)
+            Button(action: {self.userData.increment(self.numTicks)}) {
+                Text("Increment")
             }
         }
-        .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+        .padding(/*@START_MENU_TOKEN@*/.horizontal, 20.0/*@END_MENU_TOKEN@*/)
+        .padding(.vertical)
     }
 }
 
@@ -35,5 +37,6 @@ struct Clicker_Previews: PreviewProvider {
             Clicker(numTicks:1)
             Clicker(numTicks:2)
         }
+        .environmentObject(UserData())
     }
 }
