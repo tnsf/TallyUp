@@ -14,6 +14,7 @@
 		00907AA923A539CE007546DA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00907AA823A539CE007546DA /* Preview Assets.xcassets */; };
 		00907AAC23A539CE007546DA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 00907AAA23A539CE007546DA /* LaunchScreen.storyboard */; };
 		00907AB723A539CE007546DA /* TallyUpTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00907AB623A539CE007546DA /* TallyUpTests.swift */; };
+		00EAE41223AFCE5A0060CA43 /* Clicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EAE41123AFCE5A0060CA43 /* Clicker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +39,7 @@
 		00907AB223A539CE007546DA /* TallyUpTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TallyUpTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00907AB623A539CE007546DA /* TallyUpTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TallyUpTests.swift; sourceTree = "<group>"; };
 		00907AB823A539CE007546DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		00EAE41123AFCE5A0060CA43 /* Clicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0014C32223B1140F00E466DD /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				00EAE41123AFCE5A0060CA43 /* Clicker.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		00907A9323A539CC007546DA = {
 			isa = PBXGroup;
 			children = (
@@ -85,6 +95,7 @@
 				00907AA523A539CE007546DA /* Assets.xcassets */,
 				00907AAA23A539CE007546DA /* LaunchScreen.storyboard */,
 				00907AAD23A539CE007546DA /* Info.plist */,
+				0014C32223B1140F00E466DD /* Views */,
 				00907AA723A539CE007546DA /* Preview Content */,
 			);
 			path = TallyUp;
@@ -209,6 +220,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				00907AA023A539CD007546DA /* AppDelegate.swift in Sources */,
+				00EAE41223AFCE5A0060CA43 /* Clicker.swift in Sources */,
 				00907AA223A539CD007546DA /* SceneDelegate.swift in Sources */,
 				00907AA423A539CD007546DA /* ContentView.swift in Sources */,
 			);
