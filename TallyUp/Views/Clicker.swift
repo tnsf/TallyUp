@@ -15,15 +15,16 @@ struct Clicker: View {
     var body: some View {
         HStack {
             Button(action: {self.userData.decrement(self.numTicks)}) {
-                Text("Decrement")
+                Image(systemName:"minus")
             }
             Spacer()
-            Text(String(format: "%d - $%0.2f",self.numTicks,Double(self.numTicks)*0.5))
+            Text("\(self.numTicks) - \(userData.dollarText(ticks:self.numTicks))")
                 .font(.title)
                 .multilineTextAlignment(.center)
             Spacer()
             Button(action: {self.userData.increment(self.numTicks)}) {
-                Text("Increment")
+                Image(systemName:"plus")
+                    .frame(height: nil)
             }
         }
         .padding(/*@START_MENU_TOKEN@*/.horizontal, 20.0/*@END_MENU_TOKEN@*/)
