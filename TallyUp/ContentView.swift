@@ -31,18 +31,30 @@ struct ContentView: View {
                 Clicker(numTicks:2)
                 Clicker(numTicks:4)
             }
-            .padding()
-            Spacer()
-            HStack {
-                Spacer()
-                Button(action:{self.userData.clear()}) {
-                    Text("Clear")
-                }                
-                Button(action:{self.userData.apply()}) {
-                    Text("Apply")
-                }       
-                Spacer()
+            .padding([.top, .leading, .trailing])
+            VStack(alignment: .trailing) {
+                Text("+\(userData.currentSessionTickIncrement) \((userData.currentSessionTickIncrement == 1) ? "tick" : "ticks")")
+                    .font(.headline)
+                    .foregroundColor(Color.gray)
+                    .opacity((userData.currentSessionTickIncrement == 0) ? 0.0 : 1.0)
+                HStack {
+                    Button(action:{self.userData.clear()}) {
+                        Text("Clear")
+                            
+                    }
+                    .disabled(userData.currentSessionTickIncrement == 0)
+                    Spacer()
+                    Button(action:{self.userData.apply()}) {
+                        Text("Apply")
+                            
+                    }
+                    .disabled(userData.currentSessionTickIncrement == 0)       
+                }
+                .padding(.top, 8.0)
+                
             }
+            .padding([.leading, .bottom, .trailing])
+            Spacer()
         }
         .padding()
     }
