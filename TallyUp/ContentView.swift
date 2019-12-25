@@ -12,7 +12,7 @@ struct ContentView: View {
     @EnvironmentObject var userData: UserData
     
     func balance() -> String {
-        return String(format:"%d - $%0.02f",Int(userData.totalTicks),Double(userData.totalTicks)*0.5)
+        return "\(userData.totalTicks) - \(userData.dollarText(ticks:userData.totalTicks))"
     }
     var body: some View {
         VStack {
@@ -51,6 +51,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-            .environmentObject(UserData())
+            .environmentObject(UserData(balance:33,currentTicks:12))
     }
 }
