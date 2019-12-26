@@ -11,9 +11,18 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject var userData: UserData
     
-    func balance() -> String {
-        return "\(userData.totalTicks) - \(userData.dollarText(ticks:userData.totalTicks))"
+    var balance : String {
+        let absTicks = abs(userData.totalTicks)
+        return "\(absTicks) - \(userData.dollarText(ticks:absTicks))"
     }
+    var balanceColor : Color {
+        return (userData.totalTicks) < 0 ? .red : .green 
+    }
+    var balanceModifier : String {
+        let ticks = userData.totalTicks
+        return (ticks < 0) ? "owing" : (ticks > 0) ? "credit" : ""
+    }
+    
     var body: some View {
         VStack {
             HStack {
@@ -21,10 +30,13 @@ struct ContentView: View {
                     .font(.title)
                     .multilineTextAlignment(.leading)
                 Spacer()
+                Text(balanceModifier)
+                    .foregroundColor(.gray)
+                    .multilineTextAlignment(.trailing)
             }
-            Text(balance())
+            Text(balance)
                 .font(.largeTitle)
-                .foregroundColor(Color.red)
+                .foregroundColor(balanceColor)
                 .multilineTextAlignment(.center)
             VStack {
                 Clicker(numTicks:1)
@@ -35,18 +47,18 @@ struct ContentView: View {
             VStack(alignment: .trailing) {
                 Text("+\(userData.currentSessionTickIncrement) \((userData.currentSessionTickIncrement == 1) ? "tick" : "ticks")")
                     .font(.headline)
-                    .foregroundColor(Color.gray)
+                    .foregroundColor(.gray)
                     .opacity((userData.currentSessionTickIncrement == 0) ? 0.0 : 1.0)
                 HStack {
                     Button(action:{self.userData.clear()}) {
                         Text("Clear")
-                            
+                        
                     }
                     .disabled(userData.currentSessionTickIncrement == 0)
                     Spacer()
-                    Button(action:{self.userData.apply()}) {
+                    Button(action:{self.userData.charge()}) {
                         Text("Apply")
-                            
+                        
                     }
                     .disabled(userData.currentSessionTickIncrement == 0)       
                 }
@@ -54,7 +66,16 @@ struct ContentView: View {
                 
             }
             .padding([.leading, .bottom, .trailing])
+            HStack {
+                Text("Transaction History")
+                    .font(.title)
+                    .multilineTextAlignment(.leading)
+                Spacer()
+            }
             Spacer()
+            Button( action : {} ) {
+                Text("Settle")
+            }
         }
         .padding()
     }
@@ -63,6 +84,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-            .environmentObject(UserData(balance:33,currentTicks:12))
+            .environmentObject(UserData(balance:-33,currentTicks:12))
     }
 }
