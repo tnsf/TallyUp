@@ -13,7 +13,7 @@ struct ContentView: View {
     
     var balance : String {
         let absTicks = abs(userData.totalTicks)
-        return "\(absTicks) - \(userData.dollarText(ticks:absTicks))"
+        return "\(absTicks) - \(UserData.dollarText(ticks:absTicks))"
     }
     var balanceColor : Color {
         return (userData.totalTicks) < 0 ? .red : .green 
@@ -63,7 +63,6 @@ struct ContentView: View {
                     .disabled(userData.currentSessionTickIncrement == 0)       
                 }
                 .padding(.top, 8.0)
-                
             }
             .padding([.leading, .bottom, .trailing])
             HStack {
@@ -71,6 +70,9 @@ struct ContentView: View {
                     .font(.title)
                     .multilineTextAlignment(.leading)
                 Spacer()
+            }
+            List(userData.transactions.sorted(by:>)) { transaction in
+                TransactionRow(transaction:transaction)
             }
             Spacer()
             Button( action : {} ) {

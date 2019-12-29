@@ -18,7 +18,7 @@ struct Clicker: View {
                 Image(systemName:"minus")
             }
             Spacer()
-            Text("\(self.numTicks) - \(userData.dollarText(ticks:self.numTicks))")
+            Text("\(self.numTicks) - \(UserData.dollarText(ticks:self.numTicks))")
                 .font(.title)
                 .multilineTextAlignment(.center)
             Spacer()

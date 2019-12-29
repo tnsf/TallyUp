@@ -8,17 +8,36 @@
 
 import Foundation
 
-enum TransactionType
+struct Transaction : Identifiable, Comparable
 {
-    case charge
-    case credit
-}
+    var id: UUID
 
-struct Transaction
-{
     var date : Date
     var type : TransactionType
     var amount : Int
+    
+    enum TransactionType : String
+    {
+        var description: String
+        {
+            return self.rawValue
+        }
+        
+        case Charge
+        case Credit
+    }
+
+    init(date:Date = Date(), type:TransactionType = .Charge, amount:Int = 0)
+    {
+        self.id = UUID()
+        self.date = date
+        self.type = type
+        self.amount = amount
+    }
+
+    static func < (lhs: Transaction, rhs: Transaction) -> Bool {
+        return lhs.date < rhs.date
+    }
 }
 
 final class UserData : ObservableObject {
@@ -33,13 +52,13 @@ final class UserData : ObservableObject {
     }
     
     // Computations
-    func dollarText(ticks:Int) -> String {
+    static func dollarText(ticks:Int) -> String {
         return String(format:"$%0.2f",dollarAmount(ticks:ticks))
     }
-    func dollarAmount(ticks:Int) -> Double {
+    static func dollarAmount(ticks:Int) -> Double {
         return Double(ticks)*0.5
     }
-
+    
     // Actions
     func increment(_ numTicks:Int = 1) {
         self.currentSessionTickIncrement += numTicks
@@ -64,14 +83,14 @@ final class UserData : ObservableObject {
         if currentSessionTickIncrement > 0
         {
             totalTicks -= currentSessionTickIncrement
-            transactions.append(Transaction(date:Date(),type:.charge,amount:currentSessionTickIncrement))
+            transactions.append(Transaction(date:Date(),type:.Charge,amount:currentSessionTickIncrement))
         }
         clear()
     }
     func credit(ticks:Int) {
         // if currentSessionTicksIncrement != 0 { error }
         totalTicks += ticks
-        transactions.append(Transaction(date:Date(),type:.credit,amount:currentSessionTickIncrement))
+        transactions.append(Transaction(date:Date(),type:.Credit,amount:currentSessionTickIncrement))
     }
     func credit(dollars:Double) {
         credit(ticks:Int(dollars*2.0+0.5))
