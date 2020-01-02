@@ -11,7 +11,6 @@ import SwiftUI
 struct Clicker: View {
     var counter : TickCounter
     var numTicks = 1
-    @EnvironmentObject var userData: UserData
     
     var body: some View {
         HStack {
@@ -40,6 +39,5 @@ struct Clicker_Previews: PreviewProvider {
             Clicker(counter:self.counter, numTicks:1)
             Clicker(counter:self.counter, numTicks:2)
         }
-        .environmentObject(UserData())
     }
 }

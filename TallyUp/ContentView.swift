@@ -54,7 +54,7 @@ struct ContentView: View {
                 Spacer()
             }
             .padding(/*@START_MENU_TOKEN@*/.top/*@END_MENU_TOKEN@*/)
-            TickCounter()
+            TickCounter(userData:userData)
                 .padding([.leading, .bottom, .trailing])
             HStack {
                 Text("Transaction History")

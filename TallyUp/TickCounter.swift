@@ -10,7 +10,7 @@ import SwiftUI
 
 struct TickCounter: View {
     @State var currentIncrement : Int = 0
-    @EnvironmentObject var userData: UserData
+    var userData : UserData?
     
     var body: some View {
         VStack {
@@ -74,8 +74,8 @@ struct TickCounter: View {
     {
         if currentIncrement > 0
         {
-            userData.totalTicks -= currentIncrement
-            userData.transactions.append(Transaction(date:Date(),type:.Charge,amount:currentIncrement))
+            userData?.totalTicks -= currentIncrement
+            userData?.transactions.append(Transaction(date:Date(),type:.Charge,amount:currentIncrement))
         }
         clear()
     }
