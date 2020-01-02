@@ -57,7 +57,12 @@ final class UserData : ObservableObject {
         return Double(ticks)*0.5
     }
     
-    // Actions
+    // Manipulate user data
+    func charge(ticks:Int)
+    {
+        totalTicks -= ticks
+        transactions.append(Transaction(date:Date(),type:.Charge,amount:ticks))
+    }
     func credit(ticks:Int) {
         // if currentSessionTicksIncrement != 0 { error }
         totalTicks += ticks

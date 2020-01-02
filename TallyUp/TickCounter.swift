@@ -79,12 +79,10 @@ struct TickCounter: View {
     {
         if currentIncrement > 0
         {
-            userData?.totalTicks -= currentIncrement
-            userData?.transactions.append(Transaction(date:Date(),type:.Charge,amount:currentIncrement))
+            userData?.charge(ticks:currentIncrement)
         }
         clear()
     }
-    
 }
 
 struct TickCounter_Previews: PreviewProvider {
