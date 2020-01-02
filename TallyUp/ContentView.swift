@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var userData: UserData
-    
+
     var balance : String {
         let absTicks = abs(userData.totalTicks)
         return "\(absTicks) - \(UserData.dollarText(ticks:absTicks))"
@@ -18,9 +18,9 @@ struct ContentView: View {
     var balanceColor : Color {
         return (userData.totalTicks) < 0 ? .red : .green 
     }
-    var balanceModifier : String {
-        let ticks = userData.totalTicks
-        return (ticks < 0) ? "owing" : (ticks > 0) ? "credit" : ""
+
+    var currentIncrement : Int {
+        return userData.currentSessionTickIncrement
     }
     
     var body: some View {
@@ -30,37 +30,56 @@ struct ContentView: View {
                     .font(.title)
                     .multilineTextAlignment(.leading)
                 Spacer()
-                Text(balanceModifier)
-                    .foregroundColor(.gray)
-                    .multilineTextAlignment(.trailing)
             }
-            Text(balance)
-                .font(.largeTitle)
-                .foregroundColor(balanceColor)
-                .multilineTextAlignment(.center)
+            HStack {
+                Spacer()
+                Button( action : {} ) {
+                    Text("Pay...")
+                }
+            }
+            .padding(.vertical)
+            .overlay(
+                Text(balance)
+                    .font(.largeTitle)
+                    .foregroundColor(balanceColor)
+                    .multilineTextAlignment(.center)
+            )
+            HStack {
+                Text("Add Item")
+                    .font(.title)
+                    .multilineTextAlignment(.leading)
+                Spacer()
+            }
+            .padding(/*@START_MENU_TOKEN@*/.top/*@END_MENU_TOKEN@*/)
+            
             VStack {
                 Clicker(numTicks:1)
                 Clicker(numTicks:2)
+                    .padding(.vertical)
                 Clicker(numTicks:4)
             }
-            .padding([.top, .leading, .trailing])
+            .padding(.horizontal)
             VStack(alignment: .trailing) {
-                Text("+\(userData.currentSessionTickIncrement) \((userData.currentSessionTickIncrement == 1) ? "tick" : "ticks")")
+                Text("+\(currentIncrement) \((currentIncrement == 1) ? "tick" : "ticks")")
                     .font(.headline)
                     .foregroundColor(.gray)
-                    .opacity((userData.currentSessionTickIncrement == 0) ? 0.0 : 1.0)
+                    .opacity((currentIncrement == 0) ? 0.0 : 1.0)
                 HStack {
                     Button(action:{self.userData.clear()}) {
                         Text("Clear")
                         
                     }
-                    .disabled(userData.currentSessionTickIncrement == 0)
+                    .disabled(currentIncrement == 0)
                     Spacer()
                     Button(action:{self.userData.charge()}) {
                         Text("Apply")
+                            .padding(.horizontal)
+                            .padding(.vertical, 4.0)
+                            .background(currentIncrement == 0 ? Color.white : /*@START_MENU_TOKEN@*/Color.blue/*@END_MENU_TOKEN@*/)
+                            .foregroundColor(currentIncrement == 0 ? .gray : .white)
                         
                     }
-                    .disabled(userData.currentSessionTickIncrement == 0)       
+                    .disabled(currentIncrement == 0)       
                 }
                 .padding(.top, 8.0)
             }

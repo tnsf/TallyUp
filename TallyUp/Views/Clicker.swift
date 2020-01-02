@@ -28,7 +28,6 @@ struct Clicker: View {
             }
         }
         .padding(/*@START_MENU_TOKEN@*/.horizontal, 20.0/*@END_MENU_TOKEN@*/)
-        .padding(.vertical)
     }
 }
 
