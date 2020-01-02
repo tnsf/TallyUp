@@ -71,13 +71,7 @@ struct ContentView: View {
                     .multilineTextAlignment(.leading)
                 Spacer()
             }
-            List(userData.transactions.sorted(by:>)) { transaction in
-                TransactionRow(transaction:transaction)
-            }
-            Spacer()
-            Button( action : {} ) {
-                Text("Settle")
-            }
+            TransactionHistory(transactions:userData.transactions)
         }
         .padding()
     }
