@@ -42,13 +42,11 @@ struct Transaction : Identifiable, Comparable
 
 final class UserData : ObservableObject {
     @Published var totalTicks = 0
-    @Published var currentSessionTickIncrement = 0
     @Published var transactions : [Transaction] = [Transaction]()
     
     init(balance:Int = 0,currentTicks:Int = 0)
     {
         totalTicks = balance
-        currentSessionTickIncrement = currentTicks
     }
     
     // Computations
@@ -60,37 +58,10 @@ final class UserData : ObservableObject {
     }
     
     // Actions
-    func increment(_ numTicks:Int = 1) {
-        self.currentSessionTickIncrement += numTicks
-    }
-    func decrement(_ numTicks:Int = 1) {
-        let finalNumTicks = currentSessionTickIncrement-numTicks
-        if (finalNumTicks > 0)
-        {
-            currentSessionTickIncrement = finalNumTicks
-        }
-        else
-        {
-            currentSessionTickIncrement = 0
-        }
-    }
-    func clear()
-    {
-        currentSessionTickIncrement = 0
-    }
-    func charge()
-    {
-        if currentSessionTickIncrement > 0
-        {
-            totalTicks -= currentSessionTickIncrement
-            transactions.append(Transaction(date:Date(),type:.Charge,amount:currentSessionTickIncrement))
-        }
-        clear()
-    }
     func credit(ticks:Int) {
         // if currentSessionTicksIncrement != 0 { error }
         totalTicks += ticks
-        transactions.append(Transaction(date:Date(),type:.Credit,amount:currentSessionTickIncrement))
+        transactions.append(Transaction(date:Date(),type:.Credit,amount:ticks))
     }
     func credit(dollars:Double) {
         credit(ticks:Int(dollars*2.0+0.5))

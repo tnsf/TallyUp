@@ -19,10 +19,6 @@ struct ContentView: View {
         return (userData.totalTicks) < 0 ? .red : .green 
     }
 
-    var currentIncrement : Int {
-        return userData.currentSessionTickIncrement
-    }
-    
     var body: some View {
         VStack {
             HStack {
@@ -31,6 +27,9 @@ struct ContentView: View {
                     .multilineTextAlignment(.leading)
                 Spacer()
             }
+            
+            // Overal balance text on top of "Pay..." button
+
             HStack {
                 Spacer()
                 Button( action : {} ) {
@@ -51,38 +50,7 @@ struct ContentView: View {
                 Spacer()
             }
             .padding(/*@START_MENU_TOKEN@*/.top/*@END_MENU_TOKEN@*/)
-            
-            VStack {
-                Clicker(numTicks:1)
-                Clicker(numTicks:2)
-                    .padding(.vertical)
-                Clicker(numTicks:4)
-            }
-            .padding(.horizontal)
-            VStack(alignment: .trailing) {
-                Text("+\(currentIncrement) \((currentIncrement == 1) ? "tick" : "ticks")")
-                    .font(.headline)
-                    .foregroundColor(.gray)
-                    .opacity((currentIncrement == 0) ? 0.0 : 1.0)
-                HStack {
-                    Button(action:{self.userData.clear()}) {
-                        Text("Clear")
-                        
-                    }
-                    .disabled(currentIncrement == 0)
-                    Spacer()
-                    Button(action:{self.userData.charge()}) {
-                        Text("Apply")
-                            .padding(.horizontal)
-                            .padding(.vertical, 4.0)
-                            .background(currentIncrement == 0 ? Color.white : /*@START_MENU_TOKEN@*/Color.blue/*@END_MENU_TOKEN@*/)
-                            .foregroundColor(currentIncrement == 0 ? .gray : .white)
-                        
-                    }
-                    .disabled(currentIncrement == 0)       
-                }
-                .padding(.top, 8.0)
-            }
+            TickCounter()
             .padding([.leading, .bottom, .trailing])
             HStack {
                 Text("Transaction History")

@@ -9,12 +9,13 @@
 import SwiftUI
 
 struct Clicker: View {
+    var counter : TickCounter
     var numTicks = 1
     @EnvironmentObject var userData: UserData
     
     var body: some View {
         HStack {
-            Button(action: {self.userData.decrement(self.numTicks)}) {
+            Button(action: {self.counter.decrement(self.numTicks)}) {
                 Image(systemName:"minus")
             }
             Spacer()
@@ -22,7 +23,7 @@ struct Clicker: View {
                 .font(.title)
                 .multilineTextAlignment(.center)
             Spacer()
-            Button(action: {self.userData.increment(self.numTicks)}) {
+            Button(action: {self.counter.increment(self.numTicks)}) {
                 Image(systemName:"plus")
                     .frame(height: nil)
             }
@@ -32,10 +33,12 @@ struct Clicker: View {
 }
 
 struct Clicker_Previews: PreviewProvider {
+    static var counter = TickCounter()
+
     static var previews: some View {
         Group {
-            Clicker(numTicks:1)
-            Clicker(numTicks:2)
+            Clicker(counter:self.counter, numTicks:1)
+            Clicker(counter:self.counter, numTicks:2)
         }
         .environmentObject(UserData())
     }
