@@ -10,15 +10,15 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var userData: UserData
-
+    
     var balance : String {
         let absTicks = abs(userData.totalTicks)
         return "\(absTicks) - \(UserData.dollarText(ticks:absTicks))"
     }
     var balanceColor : Color {
-        return (userData.totalTicks) < 0 ? .red : .green 
+        return (userData.totalTicks) < 0 ? .red : .green
     }
-
+    
     var body: some View {
         VStack {
             HStack {
@@ -29,11 +29,15 @@ struct ContentView: View {
             }
             
             // Overal balance text on top of "Pay..." button
-
+            
             HStack {
                 Spacer()
                 Button( action : {} ) {
                     Text("Pay...")
+                        .padding(.horizontal)
+                        .padding(.vertical, 4.0)
+                        .background(userData.totalTicks < 0 ? Color.red : Color.white)
+                        .foregroundColor(userData.totalTicks < 0 ? .white : .blue)
                 }
             }
             .padding(.vertical)
@@ -51,7 +55,7 @@ struct ContentView: View {
             }
             .padding(/*@START_MENU_TOKEN@*/.top/*@END_MENU_TOKEN@*/)
             TickCounter()
-            .padding([.leading, .bottom, .trailing])
+                .padding([.leading, .bottom, .trailing])
             HStack {
                 Text("Transaction History")
                     .font(.title)
