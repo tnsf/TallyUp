@@ -21,14 +21,14 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
+            // Overal balance text on top of "Pay..." button
+            
             HStack {
                 Text("Current Balance")
                     .font(.title)
                     .multilineTextAlignment(.leading)
                 Spacer()
             }
-            
-            // Overal balance text on top of "Pay..." button
             
             HStack {
                 Spacer()
@@ -47,6 +47,9 @@ struct ContentView: View {
                     .foregroundColor(balanceColor)
                     .multilineTextAlignment(.center)
             )
+            
+            // View to click up a new charge 
+            
             HStack {
                 Text("Add Item")
                     .font(.title)
@@ -54,8 +57,12 @@ struct ContentView: View {
                 Spacer()
             }
             .padding(/*@START_MENU_TOKEN@*/.top/*@END_MENU_TOKEN@*/)
+            
             TickCounter(userData:userData)
                 .padding([.leading, .bottom, .trailing])
+            
+            // Transaction history list
+            
             HStack {
                 Text("Transaction History")
                     .font(.title)

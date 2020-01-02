@@ -14,6 +14,8 @@ struct TickCounter: View {
     
     var body: some View {
         VStack {
+            // Add clickers for one, two, four ticks.
+            
             VStack {
                 Clicker(counter:self, numTicks:1)
                 Clicker(counter:self, numTicks:2)
@@ -23,11 +25,14 @@ struct TickCounter: View {
             .padding(.horizontal)
             
             VStack(alignment: .trailing) {
+                // Current tick count
                 Text("+\(currentIncrement) \((currentIncrement == 1) ? "tick" : "ticks")")
                     .font(.headline)
                     .foregroundColor(.gray)
                     .opacity((currentIncrement == 0) ? 0.0 : 1.0)
                 
+                // Action buttons
+
                 HStack {
                     Button(action:{self.clear()}) {
                         Text("Clear")
