@@ -10,7 +10,7 @@ import SwiftUI
 
 struct TickCounter: View {
     @State var currentIncrement : Int = 0
-    var userData : UserData?
+    var applyChange : ((Int) -> Void)?
     
     var body: some View {
         VStack {
@@ -79,7 +79,7 @@ struct TickCounter: View {
     {
         if currentIncrement > 0
         {
-            userData?.charge(ticks:currentIncrement)
+            applyChange?(currentIncrement)
         }
         clear()
     }
