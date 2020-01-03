@@ -46,7 +46,7 @@ struct TickCounter: View {
                         Text("Apply")
                             .padding(.horizontal, 6.0)
                             .padding(.vertical, 4.0)
-                            .background(currentIncrement == 0 ? Color.white : /*@START_MENU_TOKEN@*/Color.blue/*@END_MENU_TOKEN@*/)
+                            .background(currentIncrement == 0 ? Color.clear : /*@START_MENU_TOKEN@*/Color.blue/*@END_MENU_TOKEN@*/)
                             .foregroundColor(currentIncrement == 0 ? .gray : .white)
                         
                     }

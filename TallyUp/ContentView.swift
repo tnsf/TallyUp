@@ -36,7 +36,7 @@ struct ContentView: View {
                     Text("Pay...")
                         .padding(.horizontal,6.0)
                         .padding(.vertical, 4.0)
-                        .background(userData.totalTicks < 0 ? Color.red : Color.white)
+                        .background(userData.totalTicks < 0 ? Color.red : Color.clear)
                         .foregroundColor(userData.totalTicks < 0 ? .white : .blue)
                 }
                 .padding(.trailing,6.0)
