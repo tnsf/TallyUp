@@ -34,11 +34,12 @@ struct ContentView: View {
                 Spacer()
                 Button( action : {} ) {
                     Text("Pay...")
-                        .padding(.horizontal)
+                        .padding(.horizontal,6.0)
                         .padding(.vertical, 4.0)
                         .background(userData.totalTicks < 0 ? Color.red : Color.white)
                         .foregroundColor(userData.totalTicks < 0 ? .white : .blue)
                 }
+                .padding(.trailing,6.0)
             }
             .padding(.vertical)
             .overlay(
@@ -60,7 +61,7 @@ struct ContentView: View {
             
             TickCounter(applyChange: { (increment:Int) -> Void in 
                 self.userData.charge(ticks:increment) } )
-                .padding([.leading, .bottom, .trailing])
+                .padding([.bottom])
             
             // Transaction history list
             
@@ -72,7 +73,6 @@ struct ContentView: View {
             }
             TransactionHistory(transactions:userData.transactions)
         }
-        .padding()
     }
 }
 

@@ -22,11 +22,11 @@ struct TickCounter: View {
                     .padding(.vertical)
                 Clicker(counter:self, numTicks:4)
             }
-            .padding(.horizontal)
             
             VStack(alignment: .trailing) {
                 // Current tick count
                 Text("+\(currentIncrement) \((currentIncrement == 1) ? "tick" : "ticks")")
+                    .padding(.trailing, 6.0)
                     .font(.headline)
                     .foregroundColor(.gray)
                     .opacity((currentIncrement == 0) ? 0.0 : 1.0)
@@ -36,6 +36,7 @@ struct TickCounter: View {
                 HStack {
                     Button(action:{self.clear()}) {
                         Text("Clear")
+                            .padding(.leading, 6.0)
                     }
                     .disabled(currentIncrement == 0)
                     
@@ -43,7 +44,7 @@ struct TickCounter: View {
                     
                     Button(action:{self.charge()}) {
                         Text("Apply")
-                            .padding(.horizontal)
+                            .padding(.horizontal, 6.0)
                             .padding(.vertical, 4.0)
                             .background(currentIncrement == 0 ? Color.white : /*@START_MENU_TOKEN@*/Color.blue/*@END_MENU_TOKEN@*/)
                             .foregroundColor(currentIncrement == 0 ? .gray : .white)
@@ -51,6 +52,7 @@ struct TickCounter: View {
                     }
                     .disabled(currentIncrement == 0)       
                 }
+                .padding(.horizontal, 6.0)
                 .padding(.top, 8.0)
             }
         }
