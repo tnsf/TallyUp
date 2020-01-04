@@ -10,10 +10,10 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var userData: UserData
-    
+
     var balance : String {
         let absTicks = abs(userData.totalTicks)
-        return "\(absTicks) - \(UserData.dollarText(ticks:absTicks))"
+        return "\(absTicks) - \(TallyUpUtil.dollarText(ticks:absTicks))"
     }
     var balanceColor : Color {
         return (userData.totalTicks) < 0 ? .red : .green

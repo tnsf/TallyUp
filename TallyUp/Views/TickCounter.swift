@@ -25,7 +25,7 @@ struct TickCounter: View {
             
             VStack(alignment: .trailing) {
                 // Current tick count
-                Text("+\(unsavedTicks) \((unsavedTicks == 1) ? "tick" : "ticks")")
+                Text(TallyUpUtil.pluralize($unsavedTicks.wrappedValue, "tick", withPlural:"ticks"))
                     .padding(.trailing, 6.0)
                     .font(.headline)
                     .foregroundColor(.gray)

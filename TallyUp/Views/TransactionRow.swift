@@ -18,7 +18,7 @@ struct TransactionRow: View {
         return dateFormatter.string(from:transaction.date)
     }
     func amount() -> String {
-        return UserData.dollarText(ticks:transaction.amount)
+        return TallyUpUtil.dollarText(ticks:transaction.amount)
     }
 
     var body: some View {

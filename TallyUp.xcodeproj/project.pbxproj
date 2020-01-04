@@ -19,6 +19,7 @@
 		00907AAC23A539CE007546DA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 00907AAA23A539CE007546DA /* LaunchScreen.storyboard */; };
 		00907AB723A539CE007546DA /* TallyUpTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00907AB623A539CE007546DA /* TallyUpTests.swift */; };
 		00B1FAAD23B93A68000D20BF /* TransactionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B1FAAB23B938AB000D20BF /* TransactionRow.swift */; };
+		00E3235923C1152700022E71 /* TallyUpUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E3235823C1152700022E71 /* TallyUpUtil.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		00907AB623A539CE007546DA /* TallyUpTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TallyUpTests.swift; sourceTree = "<group>"; };
 		00907AB823A539CE007546DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00B1FAAB23B938AB000D20BF /* TransactionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionRow.swift; sourceTree = "<group>"; };
+		00E3235823C1152700022E71 /* TallyUpUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TallyUpUtil.swift; sourceTree = "<group>"; };
 		00EAE41123AFCE5A0060CA43 /* Clicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -104,6 +106,7 @@
 				00907AA123A539CD007546DA /* SceneDelegate.swift */,
 				00907AA323A539CD007546DA /* ContentView.swift */,
 				0014C32423B11BED00E466DD /* UserData.swift */,
+				00E3235823C1152700022E71 /* TallyUpUtil.swift */,
 				00907AA523A539CE007546DA /* Assets.xcassets */,
 				00907AAA23A539CE007546DA /* LaunchScreen.storyboard */,
 				00907AAD23A539CE007546DA /* Info.plist */,
@@ -238,6 +241,7 @@
 				0014C32323B11B0C00E466DD /* Clicker.swift in Sources */,
 				00B1FAAD23B93A68000D20BF /* TransactionRow.swift in Sources */,
 				00907AA223A539CD007546DA /* SceneDelegate.swift in Sources */,
+				00E3235923C1152700022E71 /* TallyUpUtil.swift in Sources */,
 				0014C32623B1229E00E466DD /* UserData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

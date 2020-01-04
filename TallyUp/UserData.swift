@@ -113,14 +113,6 @@ final class UserData : ObservableObject, Codable {
         return true
     }
     
-    // Computations
-    static func dollarText(ticks:Int) -> String {
-        return String(format:"$%0.2f",dollarAmount(ticks:ticks))
-    }
-    static func dollarAmount(ticks:Int) -> Double {
-        return Double(ticks)*0.5
-    }
-    
     // Manipulate user data
     func charge(ticks:Int) throws {
         totalTicks -= ticks
