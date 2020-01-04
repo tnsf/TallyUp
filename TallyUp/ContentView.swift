@@ -60,7 +60,10 @@ struct ContentView: View {
             .padding(/*@START_MENU_TOKEN@*/.top/*@END_MENU_TOKEN@*/)
             
             TickCounter(applyChange: { (increment:Int) -> Void in 
-                self.userData.charge(ticks:increment) } )
+                do {
+                    try self.userData.charge(ticks:increment)
+                } catch {}
+            } )
                 .padding([.bottom])
             
             // Transaction history list
