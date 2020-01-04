@@ -114,6 +114,7 @@ final class UserData : ObservableObject, Codable {
     }
     
     // Manipulate user data
+
     func charge(ticks:Int) throws {
         totalTicks -= ticks
         transactions.append(Transaction(date:Date(),type:.Charge,amount:ticks))
@@ -126,5 +127,9 @@ final class UserData : ObservableObject, Codable {
     }
     func credit(dollars:Double) throws {
         try credit(ticks:Int(dollars*2.0+0.5))
+    }
+    func clearTransactions() throws {
+        transactions = []
+        try save()
     }
 }

@@ -11,12 +11,17 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject var userData: UserData
 
+    @State var confirmingClear = false
+    
     var balance : String {
         let absTicks = abs(userData.totalTicks)
         return "\(absTicks) - \(TallyUpUtil.dollarText(ticks:absTicks))"
     }
     var balanceColor : Color {
         return (userData.totalTicks) < 0 ? .red : .green
+    }
+    var numTransactions : Int {
+        return userData.transactions.count
     }
     
     var body: some View {
@@ -73,6 +78,19 @@ struct ContentView: View {
                     .font(.title)
                     .multilineTextAlignment(.leading)
                 Spacer()
+                Button(action: {
+                    self.confirmingClear = true
+                }) {
+                    Text("Erase")
+                }
+                .disabled(numTransactions == 0)
+                .alert(isPresented:$confirmingClear) {
+                    Alert(title: Text(String(format:"Erase %@",TallyUpUtil.pluralize(numTransactions,"transaction",withPlural:"transactions"))), message: Text("This cannot be undone"), primaryButton: .destructive(Text("Erase")) {
+                            do { try self.userData.clearTransactions() } catch {}
+                    }, secondaryButton: .cancel())
+                }
+                .multilineTextAlignment(.trailing)
+                .padding(.trailing)
             }
             TransactionHistory(transactions:userData.transactions)
         }
