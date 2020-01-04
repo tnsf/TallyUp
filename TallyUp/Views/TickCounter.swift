@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct TickCounter: View {
-    @State var currentIncrement : Int = 0
+    @State var unsavedTicks = UserDefaults.standard.integer(forKey: "TransactionUnsavedTicks")
     var applyChange : ((Int) -> Void)?
     
     var body: some View {
@@ -25,11 +25,11 @@ struct TickCounter: View {
             
             VStack(alignment: .trailing) {
                 // Current tick count
-                Text("+\(currentIncrement) \((currentIncrement == 1) ? "tick" : "ticks")")
+                Text("+\(unsavedTicks) \((unsavedTicks == 1) ? "tick" : "ticks")")
                     .padding(.trailing, 6.0)
                     .font(.headline)
                     .foregroundColor(.gray)
-                    .opacity((currentIncrement == 0) ? 0.0 : 1.0)
+                    .opacity((unsavedTicks == 0) ? 0.0 : 1.0)
                 
                 // Action buttons
 
@@ -38,7 +38,7 @@ struct TickCounter: View {
                         Text("Clear")
                             .padding(.leading, 6.0)
                     }
-                    .disabled(currentIncrement == 0)
+                    .disabled(unsavedTicks == 0)
                     
                     Spacer()
                     
@@ -46,11 +46,11 @@ struct TickCounter: View {
                         Text("Apply")
                             .padding(.horizontal, 6.0)
                             .padding(.vertical, 4.0)
-                            .background(currentIncrement == 0 ? Color.clear : /*@START_MENU_TOKEN@*/Color.blue/*@END_MENU_TOKEN@*/)
-                            .foregroundColor(currentIncrement == 0 ? .gray : .white)
+                            .background(unsavedTicks == 0 ? Color.clear : /*@START_MENU_TOKEN@*/Color.blue/*@END_MENU_TOKEN@*/)
+                            .foregroundColor(unsavedTicks == 0 ? .gray : .white)
                         
                     }
-                    .disabled(currentIncrement == 0)       
+                    .disabled(unsavedTicks == 0)       
                 }
                 .padding(.horizontal, 6.0)
                 .padding(.top, 8.0)
@@ -58,30 +58,37 @@ struct TickCounter: View {
         }
     }
     
+    // Helpers
+    func updateCount(_ ticks:Int) {
+        unsavedTicks = ticks;
+        // Save tick count in user preferences
+        UserDefaults.standard.set(self.unsavedTicks, forKey: "TransactionUnsavedTicks")
+    }
+    
     // Actions
     func increment(_ numTicks:Int = 1) {
-        currentIncrement += numTicks
+        updateCount(unsavedTicks + numTicks)
     }
     func decrement(_ numTicks:Int = 1) {
-        let finalNumTicks = currentIncrement-numTicks
+        let finalNumTicks = unsavedTicks-numTicks
         if (finalNumTicks > 0)
         {
-            currentIncrement = finalNumTicks
+            updateCount(finalNumTicks)
         }
         else
         {
-            currentIncrement = 0
+            updateCount(0)
         }
     }
     func clear()
     {
-        currentIncrement = 0
+        updateCount(0)
     }
     func charge()
     {
-        if currentIncrement > 0
+        if unsavedTicks > 0
         {
-            applyChange?(currentIncrement)
+            applyChange?(unsavedTicks)
         }
         clear()
     }
