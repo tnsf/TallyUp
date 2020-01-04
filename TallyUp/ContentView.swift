@@ -11,6 +11,7 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject var userData: UserData
 
+    @State var presentingView = false
     @State var confirmingClear = false
     
     var balance : String {
@@ -37,7 +38,9 @@ struct ContentView: View {
             
             HStack {
                 Spacer()
-                Button( action : {} ) {
+                Button( action : {
+                    self.presentingView = true
+                }) {
                     Text("Pay...")
                         .padding(.horizontal,6.0)
                         .padding(.vertical, 4.0)
@@ -45,6 +48,11 @@ struct ContentView: View {
                         .foregroundColor(userData.totalTicks < 0 ? .white : .blue)
                 }
                 .padding(.trailing,6.0)
+                .alert(isPresented: $presentingView) {
+                    Alert(title: Text("Paying off balance in full"), message: Text("This cannot be undone"), primaryButton: .destructive(Text("Pay")) {
+                        do { try self.userData.payInFull() } catch {}
+                        }, secondaryButton: .cancel())
+                }
             }
             .padding(.vertical)
             .overlay(

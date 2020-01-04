@@ -132,4 +132,7 @@ final class UserData : ObservableObject, Codable {
         transactions = []
         try save()
     }
+    func payInFull() throws {
+        try credit(ticks:-1 * totalTicks)
+    }
 }
