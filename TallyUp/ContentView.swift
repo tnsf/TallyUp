@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var userData: UserData
-
+    
     @State var presentingView = false
     @State var confirmingClear = false
     
@@ -36,31 +36,31 @@ struct ContentView: View {
                 Spacer()
             }
             
-            HStack {
-                Spacer()
-                Button( action : {
-                    self.presentingView = true
-                }) {
-                    Text("Pay...")
-                        .padding(.horizontal,6.0)
-                        .padding(.vertical, 4.0)
-                        .background(userData.totalTicks < 0 ? Color.red : Color.clear)
-                        .foregroundColor(userData.totalTicks < 0 ? .white : .blue)
+            ZStack {
+                HStack {
+                    Spacer()
+                    Button( action : {
+                        self.presentingView = true
+                    }) {
+                        Text("Pay...")
+                            .padding(.horizontal,6.0)
+                            .padding(.vertical, 4.0)
+                            .background(userData.totalTicks < 0 ? Color.red : Color.clear)
+                            .foregroundColor(userData.totalTicks < 0 ? .white : .blue)
+                    }
+                    .padding(.trailing,6.0)
+                    .alert(isPresented: $presentingView) {
+                        Alert(title: Text("Paying off balance of \(TallyUpUtil.dollarText(ticks:abs(userData.totalTicks)))"), message: Text("This cannot be undone"), primaryButton: .destructive(Text("Pay")) {
+                            do { try self.userData.payInFull() } catch {}
+                            }, secondaryButton: .cancel())
+                    }
                 }
-                .padding(.trailing,6.0)
-                .alert(isPresented: $presentingView) {
-                    Alert(title: Text("Paying off balance in full"), message: Text("This cannot be undone"), primaryButton: .destructive(Text("Pay")) {
-                        do { try self.userData.payInFull() } catch {}
-                        }, secondaryButton: .cancel())
-                }
-            }
-            .padding(.vertical)
-            .overlay(
+                .padding(.vertical)
                 Text(balance)
                     .font(.largeTitle)
                     .foregroundColor(balanceColor)
                     .multilineTextAlignment(.center)
-            )
+            }
             
             // View to click up a new charge 
             
@@ -82,23 +82,25 @@ struct ContentView: View {
             // Transaction history list
             
             HStack {
-                Text("Transaction History")
-                    .font(.title)
-                    .multilineTextAlignment(.leading)
-                Spacer()
-                Button(action: {
-                    self.confirmingClear = true
-                }) {
-                    Text("Erase")
-                }
-                .disabled(numTransactions == 0)
-                .alert(isPresented:$confirmingClear) {
-                    Alert(title: Text(String(format:"Erase %@",TallyUpUtil.pluralize(numTransactions,"transaction",withPlural:"transactions"))), message: Text("This cannot be undone"), primaryButton: .destructive(Text("Erase")) {
+                VStack(alignment: .leading, spacing: 6.0) {
+                    //                HStack {
+                    Text("Transaction Log")
+                        .font(.title)
+                        .multilineTextAlignment(.leading)
+                    Button(action: {
+                        self.confirmingClear = true
+                    }) {
+                        Text("Erase")
+                    }
+                    .disabled(numTransactions == 0)
+                    .padding(.leading)
+                    .alert(isPresented:$confirmingClear) {
+                        Alert(title: Text(String(format:"Erase %@",TallyUpUtil.pluralize(numTransactions,"transaction",withPlural:"transactions"))), message: Text("This cannot be undone"), primaryButton: .destructive(Text("Erase")) {
                             do { try self.userData.clearTransactions() } catch {}
-                    }, secondaryButton: .cancel())
+                            }, secondaryButton: .cancel())
+                    }
                 }
-                .multilineTextAlignment(.trailing)
-                .padding(.trailing)
+                Spacer()
             }
             TransactionHistory(transactions:userData.transactions)
         }

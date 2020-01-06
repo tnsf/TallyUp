@@ -13,27 +13,44 @@ struct TransactionRow: View {
     
     func date() -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "YYYY/MM/dd HH:mm"
+        dateFormatter.dateFormat = "EEE MM/dd HH:mm"//"YYYY/MM/dd HH:mm"
         
         return dateFormatter.string(from:transaction.date)
     }
     func amount() -> String {
-        return TallyUpUtil.dollarText(ticks:transaction.amount)
+        let sign = (transaction.type == .Charge) ? "-" : "+";
+        return sign + TallyUpUtil.dollarText(ticks:abs(transaction.amount))
     }
-
+    
     var body: some View {
         HStack {
-            Text(date())
+            ZStack(alignment: .leading) { // Stack invisible text element to align column to a maximum length
+                Text("XXX XX/XX XX:XX")
+                    .opacity(0.0)
+                Text(date())
+            }
             Spacer()
-            Text(transaction.type.rawValue)
+            ZStack(alignment: .leading) { // Stack invisible text element to align column to a maximum length
+                Text("XXXXXX")
+                    .opacity(0.0)
+                Text(transaction.type.rawValue)
+            }
             Spacer()
-            Text(amount())
+            ZStack(alignment: .trailing) { // Stack invisible text element to align column to a maximum length
+                Text("-$000.00")
+                    .opacity(0.0)
+                Text(amount())
+                    .foregroundColor((transaction.type == .Charge) ? Color.red : Color.green)
+            }
         }
     }
 }
 
 struct TransactionRow_Previews: PreviewProvider {
     static var previews: some View {
-        TransactionRow(transaction:Transaction(date:Date(),type:.Charge,amount:1))
+        Group {
+            TransactionRow(transaction:Transaction(date:Date(),type:.Charge,amount:1))
+            TransactionRow(transaction:Transaction(date:Date(),type:.Credit,amount:3))
+        }
     }
 }

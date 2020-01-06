@@ -20,7 +20,7 @@ struct TransactionHistory: View {
 
 struct TransactionHistory_Previews: PreviewProvider {
     static var previews: some View {
-        TransactionHistory(transactions:[Transaction(date:Date(timeIntervalSinceNow: TimeInterval(357.0)),type:.Charge,amount:1),
+        TransactionHistory(transactions:[Transaction(date:Date(timeIntervalSinceNow: TimeInterval(15.9e6)),type:.Charge,amount:1),
                                          Transaction(date:Date(),type:.Charge,amount:1)])
     }
 }
