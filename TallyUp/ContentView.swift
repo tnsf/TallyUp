@@ -26,15 +26,12 @@ struct ContentView: View {
     }
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading, spacing: 10.0) {
             // Overal balance text on top of "Pay..." button
             
-            HStack {
-                Text("Current Balance")
-                    .font(.title)
-                    .multilineTextAlignment(.leading)
-                Spacer()
-            }
+            Text("Current Balance")
+                .font(.title)
+                .multilineTextAlignment(.leading)
             
             ZStack {
                 HStack {
@@ -55,7 +52,7 @@ struct ContentView: View {
                             }, secondaryButton: .cancel())
                     }
                 }
-                .padding(.vertical)
+                
                 Text(balance)
                     .font(.largeTitle)
                     .foregroundColor(balanceColor)
@@ -64,43 +61,35 @@ struct ContentView: View {
             
             // View to click up a new charge 
             
-            HStack {
-                Text("Add Item")
-                    .font(.title)
-                    .multilineTextAlignment(.leading)
-                Spacer()
-            }
-            .padding(/*@START_MENU_TOKEN@*/.top/*@END_MENU_TOKEN@*/)
+            Text("New Item")
+                .font(.title)
+                .multilineTextAlignment(.leading)
             
             TickCounter(applyChange: { (increment:Int) -> Void in 
                 do {
                     try self.userData.charge(ticks:increment)
                 } catch {}
             } )
-                .padding([.bottom])
             
             // Transaction history list
             
-            HStack {
-                VStack(alignment: .leading, spacing: 6.0) {
-                    //                HStack {
-                    Text("Transaction Log")
-                        .font(.title)
-                        .multilineTextAlignment(.leading)
-                    Button(action: {
-                        self.confirmingClear = true
-                    }) {
-                        Text("Erase")
-                    }
-                    .disabled(numTransactions == 0)
-                    .padding(.leading)
-                    .alert(isPresented:$confirmingClear) {
-                        Alert(title: Text(String(format:"Erase %@",TallyUpUtil.pluralize(numTransactions,"transaction",withPlural:"transactions"))), message: Text("This cannot be undone"), primaryButton: .destructive(Text("Erase")) {
-                            do { try self.userData.clearTransactions() } catch {}
-                            }, secondaryButton: .cancel())
-                    }
+            VStack(alignment: .leading, spacing: 6.0) {
+                //                HStack {
+                Text("Transaction Log")
+                    .font(.title)
+                    .multilineTextAlignment(.leading)
+                Button(action: {
+                    self.confirmingClear = true
+                }) {
+                    Text("Erase")
                 }
-                Spacer()
+                .disabled(numTransactions == 0)
+                .padding(.leading)
+                .alert(isPresented:$confirmingClear) {
+                    Alert(title: Text(String(format:"Erase %@",TallyUpUtil.pluralize(numTransactions,"transaction",withPlural:"transactions"))), message: Text("This cannot be undone"), primaryButton: .destructive(Text("Erase")) {
+                        do { try self.userData.clearTransactions() } catch {}
+                        }, secondaryButton: .cancel())
+                }
             }
             TransactionHistory(transactions:userData.transactions)
         }

@@ -16,23 +16,15 @@ struct TickCounter: View {
         VStack {
             // Add clickers for one, two, four ticks.
             
-            VStack(spacing: 6.0) {
+            VStack {
                 Clicker(counter:self, numTicks:1)
                 Clicker(counter:self, numTicks:2)
-                    .padding(.vertical,4.0)
                 Clicker(counter:self, numTicks:4)
             }
             
-            VStack(alignment: .trailing) {
-                // Current tick count
-                Text(TallyUpUtil.pluralize($unsavedTicks.wrappedValue, "tick", withPlural:"ticks"))
-                    .padding(.trailing, 8.0)
-                    .font(.headline)
-                    .foregroundColor(.gray)
-                    .opacity((unsavedTicks == 0) ? 0.0 : 1.0)
-                
+            VStack(alignment: .trailing) {                
                 // Action buttons
-
+                
                 HStack {
                     Button(action:{self.clear()}) {
                         Text("Clear")
@@ -41,6 +33,12 @@ struct TickCounter: View {
                     .disabled(unsavedTicks == 0)
                     
                     Spacer()
+                    
+                    // Current tick count
+                    Text(TallyUpUtil.pluralize($unsavedTicks.wrappedValue, "tick", withPlural:"ticks"))
+                        .font(.headline)
+                        .foregroundColor(.gray)
+                        .opacity((unsavedTicks == 0) ? 0.0 : 1.0)
                     
                     Button(action:{self.charge()}) {
                         Text("Apply")
@@ -96,6 +94,6 @@ struct TickCounter: View {
 
 struct TickCounter_Previews: PreviewProvider {
     static var previews: some View {
-        TickCounter()
+        TickCounter(unsavedTicks:3)
     }
 }
