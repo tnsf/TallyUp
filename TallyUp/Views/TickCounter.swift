@@ -16,17 +16,17 @@ struct TickCounter: View {
         VStack {
             // Add clickers for one, two, four ticks.
             
-            VStack {
+            VStack(spacing: 6.0) {
                 Clicker(counter:self, numTicks:1)
                 Clicker(counter:self, numTicks:2)
-                    .padding(.vertical)
+                    .padding(.vertical,4.0)
                 Clicker(counter:self, numTicks:4)
             }
             
             VStack(alignment: .trailing) {
                 // Current tick count
                 Text(TallyUpUtil.pluralize($unsavedTicks.wrappedValue, "tick", withPlural:"ticks"))
-                    .padding(.trailing, 6.0)
+                    .padding(.trailing, 8.0)
                     .font(.headline)
                     .foregroundColor(.gray)
                     .opacity((unsavedTicks == 0) ? 0.0 : 1.0)
