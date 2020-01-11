@@ -11,15 +11,18 @@ import SwiftUI
 struct TickCounter: View {
     @State var unsavedTicks = UserDefaults.standard.integer(forKey: "TransactionUnsavedTicks")
     var applyChange : ((Int) -> Void)?
+
+    // Choose style of clickers: .PlusMinus or .Stepper
+    let style : Clicker.Style = .Stepper
     
     var body: some View {
         VStack {
             // Add clickers for one, two, four ticks.
             
-            VStack {
-                Clicker(counter:self, numTicks:1)
-                Clicker(counter:self, numTicks:2)
-                Clicker(counter:self, numTicks:4)
+            VStack(spacing:12.0) {
+                Clicker(counter:self, numTicks:1, style:style)
+                Clicker(counter:self, numTicks:2, style:style)
+                Clicker(counter:self, numTicks:4, style:style)
             }
             
             VStack(alignment: .trailing) {                

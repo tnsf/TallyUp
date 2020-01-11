@@ -9,34 +9,77 @@
 import SwiftUI
 
 struct Clicker: View {
+    enum Style {
+        case Stepper, PlusMinus        
+    }
+    
     var counter : TickCounter
     var numTicks = 1
+    var style : Style = .Stepper
     
-    var body: some View {
+    var label: String { "\(numTicks) - \(TallyUpUtil.dollarText(ticks:numTicks))" }
+    
+    var plusMinusView : some View {
         HStack {
-            Button(action: {self.counter.decrement(self.numTicks)}) {
+            Button(action: {self.decrement()}) {
                 Image(systemName:"minus")
+                    .imageScale(/*@START_MENU_TOKEN@*/.large/*@END_MENU_TOKEN@*/)
             }
             Spacer()
-            Text("\(self.numTicks) - \(TallyUpUtil.dollarText(ticks:self.numTicks))")
+            Text(label)
                 .font(.title)
                 .multilineTextAlignment(.center)
             Spacer()
-            Button(action: {self.counter.increment(self.numTicks)}) {
+            Button(action: {self.increment()}) {
                 Image(systemName:"plus")
-                    .frame(height: nil)
+                    .imageScale(/*@START_MENU_TOKEN@*/.large/*@END_MENU_TOKEN@*/)
             }
         }
-        .padding(/*@START_MENU_TOKEN@*/.horizontal, 20.0/*@END_MENU_TOKEN@*/)
     }
+    
+    var stepperView : some View {
+        Stepper(onIncrement: {self.increment()},
+                onDecrement: {self.decrement()},
+                label:{
+                    HStack {
+                        Spacer()
+                        Text(self.label)
+                            .font(.title)
+                            .multilineTextAlignment(.center)
+                        Spacer()
+                    }
+        })
+    }
+    
+    var body: some View {
+        var widget : AnyView?
+        switch (style)
+        {
+        case .PlusMinus:
+            widget = AnyView(plusMinusView)
+            
+        case .Stepper:
+            widget = AnyView(stepperView)
+        }
+        return widget.padding(.horizontal,20.0)
+    }
+    
+    // Actions
+    func increment() -> Void {
+        counter.increment(numTicks)
+    }
+    func decrement() -> Void {
+        counter.decrement(numTicks)
+    }
+    
 }
 
 struct Clicker_Previews: PreviewProvider {
     static var counter = TickCounter()
-
+    
     static var previews: some View {
         Group {
-            Clicker(counter:self.counter, numTicks:1)
+            Clicker(counter:self.counter, numTicks:1, style:.PlusMinus)
             Clicker(counter:self.counter, numTicks:2)
         }
     }
