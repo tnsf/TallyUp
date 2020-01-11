@@ -27,7 +27,7 @@ struct TickCounter: View {
                 
                 HStack {
                     Button(action:{self.clear()}) {
-                        Text("Clear")
+                        Text("Clear Item")
                             .padding(.leading, 6.0)
                     }
                     .disabled(unsavedTicks == 0)
@@ -46,9 +46,10 @@ struct TickCounter: View {
                             .padding(.vertical, 4.0)
                             .background(unsavedTicks == 0 ? Color.clear : /*@START_MENU_TOKEN@*/Color.blue/*@END_MENU_TOKEN@*/)
                             .foregroundColor(unsavedTicks == 0 ? .gray : .white)
-                        
+                            .cornerRadius(3.0)
+                            .clipped()
                     }
-                    .disabled(unsavedTicks == 0)       
+                    .disabled(unsavedTicks == 0)
                 }
                 .padding(.horizontal, 6.0)
                 .padding(.top, 8.0)

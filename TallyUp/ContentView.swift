@@ -44,6 +44,8 @@ struct ContentView: View {
                             .padding(.vertical, 4.0)
                             .background(userData.totalTicks < 0 ? Color.red : Color.clear)
                             .foregroundColor(userData.totalTicks < 0 ? .white : .blue)
+                            .cornerRadius(3.0)
+                            .clipped()
                     }
                     .padding(.trailing,6.0)
                     .alert(isPresented: $presentingView) {
@@ -74,24 +76,23 @@ struct ContentView: View {
             // Transaction history list
             
             VStack(alignment: .leading, spacing: 6.0) {
-                //                HStack {
-                Text("Transaction Log")
-                    .font(.title)
-                    .multilineTextAlignment(.leading)
-                Button(action: {
-                    self.confirmingClear = true
-                }) {
-                    Text("Erase")
-                }
-                .disabled(numTransactions == 0)
-                .padding(.leading)
-                .alert(isPresented:$confirmingClear) {
-                    Alert(title: Text(String(format:"Erase %@",TallyUpUtil.pluralize(numTransactions,"transaction",withPlural:"transactions"))), message: Text("This cannot be undone"), primaryButton: .destructive(Text("Erase")) {
-                        do { try self.userData.clearTransactions() } catch {}
-                        }, secondaryButton: .cancel())
-                }
+                    Text("Transaction Log")
+                        .font(.title)
+                        .multilineTextAlignment(.leading)
             }
             TransactionHistory(transactions:userData.transactions)
+            Button(action: {
+                self.confirmingClear = true
+            }) {
+                Text("Clear Log")
+            }
+            .disabled(numTransactions == 0)
+            .padding(.leading)
+            .alert(isPresented:$confirmingClear) {
+                Alert(title: Text(String(format:"Erase %@",TallyUpUtil.pluralize(numTransactions,"transaction",withPlural:"transactions"))), message: Text("This cannot be undone"), primaryButton: .destructive(Text("Erase")) {
+                    do { try self.userData.clearTransactions() } catch {}
+                    }, secondaryButton: .cancel())
+            }
         }
     }
 }
