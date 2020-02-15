@@ -48,11 +48,6 @@ struct ContentView: View {
                             .clipped()
                     }
                     .padding(.trailing,6.0)
-//                    .alert(isPresented: $presentingView) {
-//                        Alert(title: Text("Paying off balance of \(TallyUpUtil.dollarText(ticks:abs(userData.totalTicks)))"), message: Text("This cannot be undone"), primaryButton: .destructive(Text("Pay")) {
-//                            do { try self.userData.payInFull() } catch {}
-//                            }, secondaryButton: .cancel())
-//                    }
                         .sheet(isPresented: $presentingView) {
                             PaymentDetail(tickBalance: self.userData.totalTicks,
                                           isPresented: self.$presentingView,
