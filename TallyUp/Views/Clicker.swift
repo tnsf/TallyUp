@@ -8,16 +8,23 @@
 
 import SwiftUI
 
+protocol TickCountable {
+    func increment(_ numTicks:Int)
+    func decrement(_ numTicks:Int)
+}
+
 struct Clicker: View {
     enum Style {
         case Stepper, PlusMinus        
     }
     
-    var counter : TickCounter
+    var counter : TickCountable
     var numTicks = 1
     var style : Style = .Stepper
+    var showTicks : Bool = true
     
-    var label: String { "\(numTicks) - \(TallyUpUtil.dollarText(ticks:numTicks))" }
+    var labelTicks : String { showTicks ? "\(numTicks) - " : ""}
+    var label: String { "\(labelTicks)\(TallyUpUtil.dollarText(ticks:numTicks))" }
     
     var plusMinusView : some View {
         HStack {
@@ -48,7 +55,7 @@ struct Clicker: View {
                             .multilineTextAlignment(.center)
                         Spacer()
                     }
-        })
+            })
     }
     
     var body: some View {

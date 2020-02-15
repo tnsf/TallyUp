@@ -19,14 +19,14 @@ struct ContentView: View {
         return "\(absTicks) - \(TallyUpUtil.dollarText(ticks:absTicks))"
     }
     var balanceColor : Color {
-        return (userData.totalTicks) < 0 ? .red : .green
+        return TallyUpUtil.balanceColor(ticks:userData.totalTicks)
     }
     var numTransactions : Int {
         return userData.transactions.count
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 10.0) {
+        VStack(alignment:.leading, spacing: 10.0) {
             // Overal balance text on top of "Pay..." button
             
             Text("Current Balance")
@@ -48,10 +48,19 @@ struct ContentView: View {
                             .clipped()
                     }
                     .padding(.trailing,6.0)
-                    .alert(isPresented: $presentingView) {
-                        Alert(title: Text("Paying off balance of \(TallyUpUtil.dollarText(ticks:abs(userData.totalTicks)))"), message: Text("This cannot be undone"), primaryButton: .destructive(Text("Pay")) {
-                            do { try self.userData.payInFull() } catch {}
-                            }, secondaryButton: .cancel())
+//                    .alert(isPresented: $presentingView) {
+//                        Alert(title: Text("Paying off balance of \(TallyUpUtil.dollarText(ticks:abs(userData.totalTicks)))"), message: Text("This cannot be undone"), primaryButton: .destructive(Text("Pay")) {
+//                            do { try self.userData.payInFull() } catch {}
+//                            }, secondaryButton: .cancel())
+//                    }
+                        .sheet(isPresented: $presentingView) {
+                            PaymentDetail(tickBalance: self.userData.totalTicks,
+                                          isPresented: self.$presentingView,
+                                          onApplyChange: { (increment:Int) -> Void in 
+                                            do {
+                                                try self.userData.credit(ticks:increment)
+                                            } catch {}
+                            })
                     }
                 }
                 
@@ -67,7 +76,7 @@ struct ContentView: View {
                 .font(.title)
                 .multilineTextAlignment(.leading)
             
-            TickCounter(applyChange: { (increment:Int) -> Void in 
+            TickCounter(onApplyChange: { (increment:Int) -> Void in 
                 do {
                     try self.userData.charge(ticks:increment)
                 } catch {}

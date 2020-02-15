@@ -8,9 +8,9 @@
 
 import SwiftUI
 
-struct TickCounter: View {
+struct TickCounter: View, TickCountable {
     @State var unsavedTicks = UserDefaults.standard.integer(forKey: "TransactionUnsavedTicks")
-    var applyChange : ((Int) -> Void)?
+    var onApplyChange : ((Int) -> Void)?
 
     // Choose style of clickers: .PlusMinus or .Stepper
     let style : Clicker.Style = .Stepper
@@ -90,7 +90,7 @@ struct TickCounter: View {
     {
         if unsavedTicks > 0
         {
-            applyChange?(unsavedTicks)
+            onApplyChange?(unsavedTicks)
         }
         clear()
     }

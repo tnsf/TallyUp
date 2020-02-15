@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct TallyUpUtil {
     static func pluralize(_ count:Int, _ singular:String, withPlural plural:String) -> String {
@@ -19,5 +20,10 @@ struct TallyUpUtil {
 
     static func dollarAmount(ticks:Int) -> Double {
         return Double(ticks)*0.5
-    }   
+    }
+    
+    static func balanceColor(ticks:Int) -> Color {
+        return ticks < 0 ? .red : .green
+    }
+
 }
