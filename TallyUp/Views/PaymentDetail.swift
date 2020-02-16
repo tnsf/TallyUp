@@ -26,30 +26,32 @@ struct PaymentDetail: View, TickCountable {
     }
     
     var body: some View {
-        VStack {
-            VStack(alignment:.trailing,spacing:0.0) {
-                HStack {
-                    HStack {
-                        Text("Payment:")
-                            .font(.title)
-                            .foregroundColor(.blue)
-                    }
-                    .multilineTextAlignment(.leading)
+        VStack(alignment:.leading,spacing:0.0) {
+            
+            Text("Payment")
+                .font(.title)
+                .multilineTextAlignment(.leading)
+            
+            HStack {
+                Spacer()
+                ZStack { // Stack invisible text element to align column to a maximum length
+                    Text("$000.00")
+                        .opacity(0.0)
                     
-                    ZStack(alignment: .trailing) { // Stack invisible text element to align column to a maximum length
-                        Text("$000.00")
-                            .opacity(0.0)
-                        
-                        Text(TallyUpUtil.dollarText(ticks:unsavedTicks))
-                            .foregroundColor(Color.blue)
-                            .multilineTextAlignment(.center)
-                    }
-                    .font(.largeTitle)
+                    Text(TallyUpUtil.dollarText(ticks:unsavedTicks))
+                        .foregroundColor(Color.blue)
+                        .multilineTextAlignment(.center)
                 }
-                
+                .font(.largeTitle)
+                Spacer()
+            }
+            
+            HStack {
+                Spacer()
                 Text(balanceMessage)
-                    .multilineTextAlignment(.trailing)
+                    .multilineTextAlignment(.center)
                     .foregroundColor(TallyUpUtil.balanceColor(ticks:tickBalance+unsavedTicks))
+                Spacer()
             }
             
             HStack {

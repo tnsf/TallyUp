@@ -14,9 +14,12 @@ struct ContentView: View {
     @State var presentingView = false
     @State var confirmingClear = false
     
-    var balance : String {
+    var dollarBalance : String {
         let absTicks = abs(userData.totalTicks)
-        return "\(absTicks) - \(TallyUpUtil.dollarText(ticks:absTicks))"
+        return "\(TallyUpUtil.dollarText(ticks:absTicks))"
+    }
+    var tickBalance : String {
+        return "(\(userData.totalTicks) ticks)"
     }
     var balanceColor : Color {
         return TallyUpUtil.balanceColor(ticks:userData.totalTicks)
@@ -58,11 +61,17 @@ struct ContentView: View {
                             })
                     }
                 }
-                
-                Text(balance)
-                    .font(.largeTitle)
-                    .foregroundColor(balanceColor)
-                    .multilineTextAlignment(.center)
+     
+                VStack {
+                    Text(dollarBalance)
+                        .font(.largeTitle)
+                        .foregroundColor(balanceColor)
+                        .multilineTextAlignment(.center)
+                    
+                    Text(tickBalance)
+                        .foregroundColor(balanceColor)
+                        .multilineTextAlignment(.center)
+                }
             }
             
             // View to click up a new charge 
