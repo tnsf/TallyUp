@@ -85,33 +85,34 @@ struct PaymentDetail: View, TickCountable {
             }
             
             HStack(spacing:2.0) {
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        self.isPresented = false } ) {
-                            Text("Cancel")
+                Button(action: { self.isPresented = false } ) {
+                    HStack {
+                        Spacer()
+                        Text("Cancel")
+                        Spacer()
                     }
-                    Spacer()
+                    .padding(.vertical)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(8.0)
+                    .padding(.horizontal,3.0)
                 }
-                .padding(.vertical)
-                .background(Color.blue)
-                .foregroundColor(.white)
-                .cornerRadius(8.0)
-                .padding(.horizontal,3.0)
                 
-                HStack {
-                    Spacer()
-                    Button(action: { self.onApplyChange?(self.unsavedTicks)
-                        self.isPresented = false } ) {
-                            Text("Pay Now")
-                    }
-                    Spacer()
+                Button(action: {
+                    self.onApplyChange?(self.unsavedTicks)
+                    self.isPresented = false
+                } ) {
+                        HStack {
+                            Spacer()
+                                    Text("Pay Now")
+                            Spacer()
+                        }
+                        .padding(.vertical)
+                        .background(Color.red)
+                        .cornerRadius(8.0)
+                        .foregroundColor(.white)
+                        .padding(.horizontal,3.0)
                 }
-                .padding(.vertical)
-                .background(Color.red)
-                .cornerRadius(8.0)
-                .foregroundColor(.white)
-                .padding(.horizontal,3.0)
             }
             .padding(.top,30.0)
         }     
