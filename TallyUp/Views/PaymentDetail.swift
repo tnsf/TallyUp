@@ -68,11 +68,11 @@ struct PaymentDetail: View, TickCountable {
                     Text("Pay In Full")
                         .padding(.horizontal, 6.0)
                         .padding(.vertical, 4.0)
-                        .foregroundColor(tickBalance == 0 ? .gray : .blue)
+                        .foregroundColor(tickBalance >= 0 ? .gray : .blue)
                         .cornerRadius(3.0)
                         .clipped()
                 }
-                .disabled(tickBalance == 0)
+                .disabled(tickBalance >= 0)
             }
             .padding(.horizontal, 20.0)
             .padding(.vertical, 8.0)
