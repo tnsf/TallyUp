@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0009989423FAF41A00E75D31 /* TallyDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0009989323FAF41A00E75D31 /* TallyDetail.swift */; };
 		0014C32323B11B0C00E466DD /* Clicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EAE41123AFCE5A0060CA43 /* Clicker.swift */; };
 		0014C32623B1229E00E466DD /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0014C32423B11BED00E466DD /* UserData.swift */; };
 		0014C32723B122A900E466DD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00907AA323A539CD007546DA /* ContentView.swift */; };
@@ -35,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0009989323FAF41A00E75D31 /* TallyDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TallyDetail.swift; sourceTree = "<group>"; };
 		0014C32423B11BED00E466DD /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		0038342223BE3B7B00BB35B8 /* TransactionHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistory.swift; sourceTree = "<group>"; };
 		0038342423BE4AA500BB35B8 /* TickCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TickCounter.swift; sourceTree = "<group>"; };
@@ -77,11 +79,12 @@
 		0014C32223B1140F00E466DD /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				0038342223BE3B7B00BB35B8 /* TransactionHistory.swift */,
-				00B1FAAB23B938AB000D20BF /* TransactionRow.swift */,
+				0009989323FAF41A00E75D31 /* TallyDetail.swift */,
+				00AFA92D23BE656300875F98 /* PaymentDetail.swift */,
 				0038342423BE4AA500BB35B8 /* TickCounter.swift */,
 				00EAE41123AFCE5A0060CA43 /* Clicker.swift */,
-				00AFA92D23BE656300875F98 /* PaymentDetail.swift */,
+				0038342223BE3B7B00BB35B8 /* TransactionHistory.swift */,
+				00B1FAAB23B938AB000D20BF /* TransactionRow.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -251,6 +254,7 @@
 				00907AA223A539CD007546DA /* SceneDelegate.swift in Sources */,
 				00E3235923C1152700022E71 /* TallyUpUtil.swift in Sources */,
 				0014C32623B1229E00E466DD /* UserData.swift in Sources */,
+				0009989423FAF41A00E75D31 /* TallyDetail.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -16,7 +16,7 @@ struct TickCounter: View, TickCountable {
     let style : Clicker.Style = .Stepper
     
     var body: some View {
-        VStack {
+        VStack(spacing:0.0) {
             // Add clickers for one, two, four ticks.
             
             VStack(spacing:12.0) {

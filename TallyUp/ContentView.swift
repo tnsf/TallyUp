@@ -12,100 +12,74 @@ struct ContentView: View {
     @EnvironmentObject var userData: UserData
     
     @State var presentingView = false
-    @State var confirmingClear = false
     
     var dollarBalance : String {
         let absTicks = abs(userData.totalTicks)
         return "\(TallyUpUtil.dollarText(ticks:absTicks))"
     }
     var tickBalance : String {
-        return "(\(userData.totalTicks) ticks)"
+        let absTicks = abs(userData.totalTicks)
+        let direction = (userData.totalTicks < 0) ? "owing" : "credit"
+        return absTicks == 0 ? "" : "(\(absTicks) ticks \(direction))"
     }
     var balanceColor : Color {
         return TallyUpUtil.balanceColor(ticks:userData.totalTicks)
     }
-    var numTransactions : Int {
-        return userData.transactions.count
-    }
     
     var body: some View {
         VStack(alignment:.leading, spacing: 10.0) {
-            // Overal balance text on top of "Pay..." button
-            
+
             Text("Current Balance")
                 .font(.title)
                 .multilineTextAlignment(.leading)
-            
-            ZStack {
+
+            VStack(spacing:0.0) {
                 HStack {
                     Spacer()
-                    Button( action : {
-                        self.presentingView = true
-                    }) {
-                        Text("Pay...")
-                            .padding(.horizontal,6.0)
-                            .padding(.vertical, 4.0)
-                            .background(userData.totalTicks < 0 ? Color.red : Color.clear)
-                            .foregroundColor(userData.totalTicks < 0 ? .white : .blue)
-                            .cornerRadius(3.0)
-                            .clipped()
-                    }
-                    .padding(.trailing,6.0)
-                        .sheet(isPresented: $presentingView) {
-                            PaymentDetail(tickBalance: self.userData.totalTicks,
-                                          isPresented: self.$presentingView,
-                                          onApplyChange: { (increment:Int) -> Void in 
-                                            do {
-                                                try self.userData.credit(ticks:increment)
-                                            } catch {}
-                            })
-                    }
-                }
-     
-                VStack {
                     Text(dollarBalance)
                         .font(.largeTitle)
                         .foregroundColor(balanceColor)
                         .multilineTextAlignment(.center)
+                    Spacer()
+                }
+                
+                ZStack {
+                    HStack {
+                        Spacer()
+                        Button( action : {
+                            self.presentingView = true
+                        }) {
+                            Text("Pay...")
+                                .padding(.horizontal,6.0)
+                                .padding(.vertical,4.0)
+                                .background(userData.totalTicks < 0 ? Color.red : Color.clear)
+                                .foregroundColor(userData.totalTicks < 0 ? .white : .blue)
+                                .cornerRadius(3.0)
+                                .clipped()
+                        }
+                        .padding(.trailing,6.0)
+                        .sheet(isPresented: $presentingView) {
+                            PaymentDetail(tickBalance: self.userData.totalTicks,
+                                          onApplyChange: { (increment:Int) -> Void in 
+                                            do {
+                                                try self.userData.credit(ticks:increment)
+                                            }
+                                            catch {} },
+                                          onDismiss: { self.presentingView = false } )
+                        }
+                    }
                     
-                    Text(tickBalance)
-                        .foregroundColor(balanceColor)
-                        .multilineTextAlignment(.center)
+                    VStack {
+                        Text(tickBalance)
+                            .foregroundColor(balanceColor)
+                            .multilineTextAlignment(.center)
+                    }
                 }
             }
             
-            // View to click up a new charge 
-            
-            Text("New Item")
-                .font(.title)
-                .multilineTextAlignment(.leading)
-            
-            TickCounter(onApplyChange: { (increment:Int) -> Void in 
-                do {
-                    try self.userData.charge(ticks:increment)
-                } catch {}
-            } )
-            
-            // Transaction history list
-            
-            VStack(alignment: .leading, spacing: 6.0) {
-                    Text("Transaction Log")
-                        .font(.title)
-                        .multilineTextAlignment(.leading)
-            }
-            TransactionHistory(transactions:userData.transactions)
-            Button(action: {
-                self.confirmingClear = true
-            }) {
-                Text("Clear Log")
-            }
-            .disabled(numTransactions == 0)
-            .padding(.leading)
-            .alert(isPresented:$confirmingClear) {
-                Alert(title: Text(String(format:"Erase %@",TallyUpUtil.pluralize(numTransactions,"transaction",withPlural:"transactions"))), message: Text("This cannot be undone"), primaryButton: .destructive(Text("Erase")) {
-                    do { try self.userData.clearTransactions() } catch {}
-                    }, secondaryButton: .cancel())
-            }
+            TallyDetail()
+            // Instead of using sheet above, maybe switch out TallyDetail
+            // with PaymentDetail(tickBalance: self.userData.totalTicks)
         }
     }
 }

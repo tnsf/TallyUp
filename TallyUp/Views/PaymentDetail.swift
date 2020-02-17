@@ -10,8 +10,8 @@ import SwiftUI
 
 struct PaymentDetail: View, TickCountable {
     var tickBalance : Int
-    @Binding var isPresented: Bool
     var onApplyChange : ((Int) -> Void)?
+    var onDismiss : (() -> Void)?
     
     @State var unsavedTicks = 0
     
@@ -87,7 +87,7 @@ struct PaymentDetail: View, TickCountable {
             }
             
             HStack(spacing:2.0) {
-                Button(action: { self.isPresented = false } ) {
+                Button(action: { self.onDismiss?() } ) {
                     HStack {
                         Spacer()
                         Text("Cancel")
@@ -102,7 +102,7 @@ struct PaymentDetail: View, TickCountable {
                 
                 Button(action: {
                     self.onApplyChange?(self.unsavedTicks)
-                    self.isPresented = false
+                    self.onDismiss?()
                 } ) {
                         HStack {
                             Spacer()
@@ -145,6 +145,6 @@ struct PaymentDetail_Previews: PreviewProvider {
     @State static var showingPayment = false
 
     static var previews: some View {
-        PaymentDetail(tickBalance: 17, isPresented: $showingPayment)
+        PaymentDetail(tickBalance: 17)
     }
 }
