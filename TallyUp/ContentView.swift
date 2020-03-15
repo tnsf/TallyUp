@@ -10,6 +10,7 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var userData: UserData
+
     @State var payingUp = false
     @State var confirmingClear = false
     @State var unpaidTicks : Int = 0
@@ -36,9 +37,62 @@ struct ContentView: View {
     // Content for summary line of current value display
     
     var balanceSummary : String {
-        let absTicks = abs(userData.totalTicks)
-        let direction = (userData.totalTicks < 0) ? "owing" : "credit"
-        return absTicks == 0 ? "" : "(\(absTicks) ticks \(direction))"
+        if (payingUp)
+        {
+            let resulting = userData.totalTicks+unpaidTicks
+            let dollars = TallyUpUtil.dollarText(ticks: abs(resulting))
+            let wrapped = (resulting < 0) ? "(\(dollars))" : dollars
+            return "Resulting balance: \(wrapped)"
+        }
+        else
+        {
+            let absTicks = abs(userData.totalTicks)
+            let direction = (userData.totalTicks < 0) ? "owing" : "credit"
+            return absTicks == 0 ? "" : "(\(absTicks) ticks \(direction))"
+        }
+    }
+    var summaryColor : Color {
+        return payingUp ? TallyUpUtil.balanceColor(ticks:userData.totalTicks+unpaidTicks)
+                        : TallyUpUtil.balanceColor(ticks:userData.totalTicks)
+    }
+    
+    var summaryButton : some View {
+        var text : String
+        var foreground : Color
+        var background : Color
+        var onClick : (() -> Void) = {}
+        var disabled : Bool
+    
+        if (payingUp)
+        {
+            text = "Even Up"
+            foreground = userData.totalTicks >= 0 ? .gray : .white
+            background = userData.totalTicks >= 0 ? .clear : .blue
+            onClick = {self.unpaidTicks = -self.userData.totalTicks}
+            disabled = (userData.totalTicks >= 0)
+        }
+        else
+        {
+            text = "Pay"
+            foreground = userData.totalTicks < 0 ? .white : .blue
+            background = userData.totalTicks < 0 ? .red : .clear
+            onClick = {
+                self.unpaidTicks = 0
+                self.payingUp = true
+            }
+            disabled = false
+        }
+        return Button (action:onClick)
+        {
+            Text(text)
+                .padding(.horizontal, 6.0)
+                .background(background)
+                .foregroundColor(foreground)
+                .cornerRadius(3.0)
+                .clipped()
+        }
+        .padding(.trailing,6.0)
+        .disabled(disabled)
     }
 
     // Content for "transaction log"
@@ -63,47 +117,45 @@ struct ContentView: View {
                 Spacer()
             }
             
+            ZStack {
+                HStack {
+                    Spacer()
+                    summaryButton
+                }
+                
+                Text(balanceSummary)
+                    .foregroundColor(summaryColor)
+                    .multilineTextAlignment(.center)
+            }
+            .padding(.bottom,6.0)
+
             if (self.payingUp)
             {
-                AnyView(VStack(alignment:.leading, spacing: 0.0) {
-                    PaymentDetail(tickBalance: self.userData.totalTicks,
-                                  unsavedTicks: self.$unpaidTicks,
-                                  onApplyChange: { (increment:Int) -> Void in 
-                                    do {
-                                        try self.userData.credit(ticks:increment)
-                                    }
-                                    catch {} },
-                                  onDismiss: { self.payingUp = false } )
-                    }
+                AnyView(PaymentDetail(tickBalance: self.userData.totalTicks,
+                                      unsavedTicks: self.$unpaidTicks,
+                                      onApplyChange: { (increment:Int) -> Void in 
+                                        do {
+                                            try self.userData.credit(ticks:increment)
+                                        }
+                                        catch {} },
+                                      onDismiss: { self.payingUp = false } )
+                    .padding(.bottom,6.0)
                 )
             }
             else
             {
-                AnyView(VStack(alignment:.leading, spacing: 0.0) {
-                    VStack(spacing:0.0) {
-                        ZStack {
-                            HStack {
-                                Spacer()
-                                Button( action : {
-                                    self.unpaidTicks = 0
-                                    self.payingUp = true
-                                }) {
-                                    Text("Pay...")
-                                        .padding(.horizontal,6.0)
-                                        .background(userData.totalTicks < 0 ? Color.red : Color.clear)
-                                        .foregroundColor(userData.totalTicks < 0 ? .white : .blue)
-                                        .cornerRadius(3.0)
-                                        .clipped()
-                                }
-                                .padding(.trailing,6.0)
-                            }
-                            
-                            Text(balanceSummary)
-                                .foregroundColor(balanceColor)
-                                .multilineTextAlignment(.center)
-                        }
-                    }
-                    TallyDetail()
+                AnyView(VStack(alignment: .leading, spacing:10.0) {
+                    
+                    Text("New Item")
+                        .font(.title)
+                        .multilineTextAlignment(.leading)
+                    
+                    TickCounter(onApplyChange: { (increment:Int) -> Void in 
+                        do {
+                            try self.userData.charge(ticks:increment)
+                        } catch {}
+                    } )
+                    
                     }
                 )
             }

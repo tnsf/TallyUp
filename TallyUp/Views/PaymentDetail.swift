@@ -27,32 +27,7 @@ struct PaymentDetail: View, TickCountable {
     
     var body: some View {
         VStack(alignment:.leading,spacing:0.0) {
-            
-            ZStack {
-                HStack {
-                    Text(balanceSummary)
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(TallyUpUtil.balanceColor(ticks:tickBalance+unsavedTicks))
-                }
-                
-                HStack {
-                    Spacer()
-                    
-                    Button (action:{self.unsavedTicks = -self.tickBalance})
-                    {
-                        Text("Even Up")
-                            .padding(.horizontal, 6.0)
-                            .background(tickBalance >= 0 ? .clear : Color.blue)
-                            .foregroundColor(tickBalance >= 0 ? .gray : .white)
-                            .cornerRadius(3.0)
-                            .clipped()
-                    }
-                    .disabled(tickBalance >= 0)
-                }
-                .padding(.horizontal, 6.0)
-            }
-            .padding(.bottom,6.0)
-            
+                        
             VStack(spacing:12.0) {
                 Clicker(counter:self, numTicks:40, style:style, showTicks:false)
                 Clicker(counter:self, numTicks:20, style:style, showTicks:false)
@@ -86,14 +61,15 @@ struct PaymentDetail: View, TickCountable {
                             Spacer()
                         }
                         .padding(.vertical)
-                        .background(Color.red)
+                        .background(unsavedTicks > 0 ? Color.red : Color.gray)
                         .cornerRadius(8.0)
                         .foregroundColor(.white)
                         .padding(.horizontal,3.0)
                 }
             }
             .padding(.vertical,15.0)
-        }     
+        }
+        .padding(.top,8.0)
     }
     
     // Actions
