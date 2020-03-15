@@ -10,15 +10,15 @@ import SwiftUI
 
 struct PaymentDetail: View, TickCountable {
     var tickBalance : Int
+    @Binding var unsavedTicks : Int
     var onApplyChange : ((Int) -> Void)?
     var onDismiss : (() -> Void)?
     
-    @State var unsavedTicks = 0
     
     // Choose style of clickers: .PlusMinus or .Stepper
     let style : Clicker.Style = .Stepper
     
-    var balanceMessage : String {
+    var balanceSummary : String {
         let resulting = tickBalance+unsavedTicks
         let dollars = TallyUpUtil.dollarText(ticks: abs(resulting))
         let wrapped = (resulting < 0) ? "(\(dollars))" : dollars
@@ -28,54 +28,30 @@ struct PaymentDetail: View, TickCountable {
     var body: some View {
         VStack(alignment:.leading,spacing:0.0) {
             
-            Text("Payment")
-                .font(.title)
-                .multilineTextAlignment(.leading)
-            
-            HStack {
-                Spacer()
-                ZStack { // Stack invisible text element to align column to a maximum length
-                    Text("$000.00")
-                        .opacity(0.0)
-                    
-                    Text(TallyUpUtil.dollarText(ticks:unsavedTicks))
-                        .foregroundColor(Color.blue)
+            ZStack {
+                HStack {
+                    Text(balanceSummary)
                         .multilineTextAlignment(.center)
+                        .foregroundColor(TallyUpUtil.balanceColor(ticks:tickBalance+unsavedTicks))
                 }
-                .font(.largeTitle)
-                Spacer()
-            }
-            
-            HStack {
-                Spacer()
-                Text(balanceMessage)
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(TallyUpUtil.balanceColor(ticks:tickBalance+unsavedTicks))
-                Spacer()
-            }
-            
-            HStack {
-                Button(action:{self.unsavedTicks = 0}) {
-                    Text("Clear")
-                        .padding(.leading, 6.0)
-                }
-                .disabled(unsavedTicks == 0)
                 
-                Spacer()
-                
-                Button (action:{self.unsavedTicks = -self.tickBalance})
-                {
-                    Text("Pay In Full")
-                        .padding(.horizontal, 6.0)
-                        .padding(.vertical, 4.0)
-                        .foregroundColor(tickBalance >= 0 ? .gray : .blue)
-                        .cornerRadius(3.0)
-                        .clipped()
+                HStack {
+                    Spacer()
+                    
+                    Button (action:{self.unsavedTicks = -self.tickBalance})
+                    {
+                        Text("Even Up")
+                            .padding(.horizontal, 6.0)
+                            .background(tickBalance >= 0 ? .clear : Color.blue)
+                            .foregroundColor(tickBalance >= 0 ? .gray : .white)
+                            .cornerRadius(3.0)
+                            .clipped()
+                    }
+                    .disabled(tickBalance >= 0)
                 }
-                .disabled(tickBalance >= 0)
+                .padding(.horizontal, 6.0)
             }
-            .padding(.horizontal, 20.0)
-            .padding(.vertical, 8.0)
+            .padding(.bottom,6.0)
             
             VStack(spacing:12.0) {
                 Clicker(counter:self, numTicks:40, style:style, showTicks:false)
@@ -116,7 +92,7 @@ struct PaymentDetail: View, TickCountable {
                         .padding(.horizontal,3.0)
                 }
             }
-            .padding(.top,30.0)
+            .padding(.vertical,15.0)
         }     
     }
     
@@ -143,8 +119,9 @@ struct PaymentDetail: View, TickCountable {
 
 struct PaymentDetail_Previews: PreviewProvider {
     @State static var showingPayment = false
+    @State static var ticksPaying : Int = 0
 
     static var previews: some View {
-        PaymentDetail(tickBalance: 17)
+        PaymentDetail(tickBalance: 17,unsavedTicks:$ticksPaying)
     }
 }
