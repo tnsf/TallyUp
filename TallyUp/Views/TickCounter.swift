@@ -52,6 +52,7 @@ struct TickCounter: View, TickCountable {
                             .foregroundColor(unsavedTicks == 0 ? .gray : .white)
                             .cornerRadius(3.0)
                             .clipped()
+                            .disabled(unsavedTicks==0)
                     }
                     .disabled(unsavedTicks == 0)
                 }

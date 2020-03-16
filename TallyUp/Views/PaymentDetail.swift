@@ -57,7 +57,7 @@ struct PaymentDetail: View, TickCountable {
                 } ) {
                         HStack {
                             Spacer()
-                                    Text("Pay Now")
+                            Text("Pay Now")
                             Spacer()
                         }
                         .padding(.vertical)
@@ -66,6 +66,7 @@ struct PaymentDetail: View, TickCountable {
                         .foregroundColor(.white)
                         .padding(.horizontal,3.0)
                 }
+                .disabled(unsavedTicks==0)
             }
             .padding(.vertical,15.0)
         }
