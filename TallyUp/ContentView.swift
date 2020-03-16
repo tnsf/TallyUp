@@ -18,7 +18,7 @@ struct ContentView: View {
     // Header indicating current mode
 
     var headerTitle : String {
-        return payingUp ? "Payment" : "Current Balance";
+        return payingUp ? "Payment" : "Current Balance"
     }
 
     // Content for "current value" display
@@ -60,7 +60,7 @@ struct ContentView: View {
         var text : String
         var foreground : Color
         var background : Color
-        var onClick : (() -> Void) = {}
+        var onClick : (() -> Void)
         var disabled : Bool
     
         if (payingUp)
@@ -104,9 +104,12 @@ struct ContentView: View {
     var body: some View {
         VStack(alignment:.leading, spacing: 0.0) {
             
+            // Mode header and dollar balance/summary line/action button
+            
             Text(headerTitle)
                 .font(.title)
                 .multilineTextAlignment(.leading)
+                .animation(.none)
             
             HStack {
                 Spacer()
@@ -114,20 +117,25 @@ struct ContentView: View {
                     .font(.largeTitle)
                     .foregroundColor(balanceColor)
                     .multilineTextAlignment(.center)
+                    .animation(.none)
                 Spacer()
             }
-            
+            .animation(.none)
+
             ZStack {
+                Text(balanceSummary)
+                    .foregroundColor(summaryColor)
+                    .multilineTextAlignment(.center)
+
                 HStack {
                     Spacer()
                     summaryButton
                 }
-                
-                Text(balanceSummary)
-                    .foregroundColor(summaryColor)
-                    .multilineTextAlignment(.center)
             }
             .padding(.bottom,6.0)
+            .animation(.none)
+            
+            // "Tally up" or "Make payment" view
 
             if (self.payingUp)
             {
@@ -141,11 +149,11 @@ struct ContentView: View {
                                       onDismiss: { self.payingUp = false } )
                     .padding(.bottom,6.0)
                 )
+                .transition(.opacity)
             }
             else
             {
                 AnyView(VStack(alignment: .leading, spacing:10.0) {
-                    
                     Text("New Item")
                         .font(.title)
                         .multilineTextAlignment(.leading)
@@ -155,9 +163,9 @@ struct ContentView: View {
                             try self.userData.charge(ticks:increment)
                         } catch {}
                     } )
-                    
                     }
                 )
+                .transition(.opacity)
             }
             
             // Transaction history list
@@ -181,6 +189,7 @@ struct ContentView: View {
                     }, secondaryButton: .cancel())
             }
         }
+        .animation(.default)
     }
 }
 

@@ -42,6 +42,7 @@ struct TickCounter: View, TickCountable {
                         .font(.headline)
                         .foregroundColor(.gray)
                         .opacity((unsavedTicks == 0) ? 0.0 : 1.0)
+                        .animation(.none)
                     
                     Button(action:{self.charge()}) {
                         Text("Apply")
