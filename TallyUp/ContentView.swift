@@ -15,12 +15,6 @@ struct ContentView: View {
     @State var confirmingClear = false
     @State var unpaidTicks : Int = 0
 
-    // Header indicating current mode
-
-    var headerTitle : String {
-        return payingUp ? "Payment" : "Current Balance"
-    }
-
     // Content for "current value" display
     
     var displayedTicks : Int {
@@ -104,12 +98,7 @@ struct ContentView: View {
     var body: some View {
         VStack(alignment:.leading, spacing: 0.0) {
             
-            // Mode header and dollar balance/summary line/action button
-            
-            Text(headerTitle)
-                .font(.title)
-                .multilineTextAlignment(.leading)
-                .animation(.none)
+            // Dollar balance/summary line/action button
             
             HStack {
                 Spacer()
@@ -139,16 +128,21 @@ struct ContentView: View {
 
             if (self.payingUp)
             {
-                AnyView(PaymentDetail(tickBalance: self.userData.totalTicks,
-                                      unsavedTicks: self.$unpaidTicks,
-                                      onApplyChange: { (increment:Int) -> Void in 
-                                        do {
-                                            try self.userData.credit(ticks:increment)
-                                        }
-                                        catch {} },
-                                      onDismiss: { self.payingUp = false } )
-                    .padding(.bottom,6.0)
-                )
+                AnyView(VStack(alignment: .leading, spacing:10.0) {
+                    Text("Payment")
+                        .font(.title)
+                        .multilineTextAlignment(.leading)
+                    
+                    PaymentDetail(tickBalance: self.userData.totalTicks,
+                                  unsavedTicks: self.$unpaidTicks,
+                                  onApplyChange: { (increment:Int) -> Void in 
+                                    do {
+                                        try self.userData.credit(ticks:increment)
+                                    }
+                                    catch {} },
+                                  onDismiss: { self.payingUp = false } )
+                        .padding(.bottom,6.0)
+                })
                 .transition(.opacity)
             }
             else
