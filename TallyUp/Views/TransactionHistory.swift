@@ -15,12 +15,15 @@ struct TransactionHistory: View {
         List(transactions.sorted(by:>)) { transaction in
             TransactionRow(transaction:transaction)
         }
+        .listStyle(PlainListStyle())
     }
 }
 
 struct TransactionHistory_Previews: PreviewProvider {
     static var previews: some View {
-        TransactionHistory(transactions:[Transaction(date:Date(timeIntervalSinceNow: TimeInterval(15.9e6)),type:.Charge,amount:1),
-                                         Transaction(date:Date(),type:.Charge,amount:1)])
+        Group {
+            TransactionHistory(transactions:[Transaction(date:Date(timeIntervalSinceNow: TimeInterval(15.9e6)),type:.Charge,amount:1),
+                                             Transaction(date:Date(),type:.Charge,amount:1)])
+        }
     }
 }
