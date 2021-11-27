@@ -143,7 +143,9 @@ struct ContentView: View {
                                   onDismiss: { self.payingUp = false } )
                         .padding(.bottom,6.0)
                 })
-                .transition(.opacity)
+//                .transition(.asymmetric(insertion: .scale, removal: .scale))
+                    .transition(.opacity)
+                  
             }
             else
             {
@@ -159,7 +161,8 @@ struct ContentView: View {
                     } )
                     }
                 )
-                .transition(.opacity)
+//                .transition(.asymmetric(insertion: .scale, removal: .scale))
+                    .transition(.opacity)
             }
             
             // Transaction history list
@@ -190,6 +193,7 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-            .environmentObject(UserData(balance:-33,currentTicks:12))
+          .environmentObject(UserData(balance:-33,currentTicks:12,initialTransactions:[Transaction(date:Date(timeIntervalSinceNow: TimeInterval(15.9e6)),type:.Charge,amount:1),
+                                                                                  Transaction(date:Date(),type:.Charge,amount:1)]))
     }
 }
