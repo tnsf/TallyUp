@@ -30,7 +30,6 @@ struct PaymentDetail: View, TickCountable {
                         
             VStack(spacing:12.0) {
                 Clicker(counter:self, numTicks:40, style:style, showTicks:false)
-                Clicker(counter:self, numTicks:20, style:style, showTicks:false)
                 Clicker(counter:self, numTicks:10, style:style, showTicks:false)
                 Clicker(counter:self, numTicks:4, style:style, showTicks:false)
                 Clicker(counter:self, numTicks:2, style:style, showTicks:false)
@@ -61,9 +60,9 @@ struct PaymentDetail: View, TickCountable {
                             Spacer()
                         }
                         .padding(.vertical)
-                        .background(unsavedTicks > 0 ? Color.red : Color.gray)
+                        .background(unsavedTicks > 0 ? Color.red : Color.clear)
+                        .foregroundColor(unsavedTicks > 0 ? Color.white : Color.gray)
                         .cornerRadius(8.0)
-                        .foregroundColor(.white)
                         .padding(.horizontal,3.0)
                 }
                 .disabled(unsavedTicks==0)

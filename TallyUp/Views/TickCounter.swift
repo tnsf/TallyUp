@@ -30,29 +30,32 @@ struct TickCounter: View, TickCountable {
                 
                 HStack {
                     Button(action:{self.clear()}) {
-                        Text("Clear Item")
-                            .padding(.leading, 6.0)
+                        HStack {
+                            Spacer()
+                            Text("Clear Item")
+                            Spacer()
+                        }
+                        .padding(.horizontal,3.0)
+                        .padding(.vertical)
+                        .background(unsavedTicks == 0 ? Color.clear : Color.gray)
+                        .foregroundColor(unsavedTicks == 0 ? .gray : .white)
+                        .cornerRadius(8.0)
                     }
                     .disabled(unsavedTicks == 0)
                     
-                    Spacer()
-                    
-                    // Current tick count
-                    Text(TallyUpUtil.pluralize($unsavedTicks.wrappedValue, "tick", withPlural:"ticks"))
-                        .font(.headline)
-                        .foregroundColor(.gray)
-                        .opacity((unsavedTicks == 0) ? 0.0 : 1.0)
-                        .animation(.none)
-                    
                     Button(action:{self.charge()}) {
-                        Text("Apply")
-                            .padding(.horizontal, 6.0)
-                            .padding(.vertical, 4.0)
-                            .background(unsavedTicks == 0 ? Color.clear : /*@START_MENU_TOKEN@*/Color.blue/*@END_MENU_TOKEN@*/)
-                            .foregroundColor(unsavedTicks == 0 ? .gray : .white)
-                            .cornerRadius(3.0)
-                            .clipped()
-                            .disabled(unsavedTicks==0)
+                        HStack {
+                            Spacer()
+                            Text(unsavedTicks == 0 ? "Apply" : "Apply " + TallyUpUtil.pluralize($unsavedTicks.wrappedValue, "tick", withPlural:"ticks"))
+                            Spacer()
+                        }
+                        .padding(.horizontal, 6.0)
+                        .padding(.vertical)
+                        .background(unsavedTicks == 0 ? Color.clear : /*@START_MENU_TOKEN@*/Color.blue/*@END_MENU_TOKEN@*/)
+                        .foregroundColor(unsavedTicks == 0 ? .gray : .white)
+                        .cornerRadius(8.0)
+                        .clipped()
+                        .disabled(unsavedTicks==0)
                     }
                     .disabled(unsavedTicks == 0)
                 }
