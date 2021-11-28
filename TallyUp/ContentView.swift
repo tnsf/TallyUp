@@ -16,7 +16,7 @@ struct ContentView: View {
     @State var unpaidTicks : Int = 0
 
     // Content for "current value" display
-    
+
     var displayedTicks : Int {
         return payingUp ? unpaidTicks : userData.totalTicks
     }
@@ -27,9 +27,9 @@ struct ContentView: View {
     var balanceColor : Color {
         return payingUp ? Color.blue : TallyUpUtil.balanceColor(ticks:userData.totalTicks)
     }
-    
+
     // Content for summary line of current value display
-    
+
     var balanceSummary : String {
         if (payingUp)
         {
@@ -49,14 +49,14 @@ struct ContentView: View {
         return payingUp ? TallyUpUtil.balanceColor(ticks:userData.totalTicks+unpaidTicks)
                         : TallyUpUtil.balanceColor(ticks:userData.totalTicks)
     }
-    
+
     var summaryButton : some View {
         var text : String
         var foreground : Color
         var background : Color
         var onClick : (() -> Void)
         var disabled : Bool
-    
+
         if (payingUp)
         {
             text = "Even Up"
@@ -90,16 +90,16 @@ struct ContentView: View {
     }
 
     // Content for "transaction log"
-    
+
     var numTransactions : Int { userData.transactions.count }
-    
+
     // Main view body
-    
+
     var body: some View {
         VStack(alignment:.leading, spacing: 0.0) {
-            
+
             // Dollar balance/summary line/action button
-            
+
             HStack {
                 Spacer()
                 Text(dollarBalance)
@@ -123,7 +123,7 @@ struct ContentView: View {
             }
             .padding(.bottom,6.0)
             .animation(.none)
-            
+
             // "Tally up" or "Make payment" view
 
             if (self.payingUp)
@@ -132,10 +132,10 @@ struct ContentView: View {
                     Text("Payment")
                         .font(.title)
                         .multilineTextAlignment(.leading)
-                    
+
                     PaymentDetail(tickBalance: self.userData.totalTicks,
                                   unsavedTicks: self.$unpaidTicks,
-                                  onApplyChange: { (increment:Int) -> Void in 
+                                  onApplyChange: { (increment:Int) -> Void in
                                     do {
                                         try self.userData.credit(ticks:increment)
                                     }
@@ -145,7 +145,7 @@ struct ContentView: View {
                 })
 //                .transition(.asymmetric(insertion: .scale, removal: .scale))
                     .transition(.opacity)
-                  
+
             }
             else
             {
@@ -153,8 +153,8 @@ struct ContentView: View {
                     Text("New Item")
                         .font(.title)
                         .multilineTextAlignment(.leading)
-                    
-                    TickCounter(onApplyChange: { (increment:Int) -> Void in 
+
+                    TickCounter(onApplyChange: { (increment:Int) -> Void in
                         do {
                             try self.userData.charge(ticks:increment)
                         } catch {}
@@ -164,26 +164,29 @@ struct ContentView: View {
 //                .transition(.asymmetric(insertion: .scale, removal: .scale))
                     .transition(.opacity)
             }
-            
+
             // Transaction history list
-            
-            VStack(alignment: .leading, spacing: 6.0) {
+
+            VStack(alignment: .leading, spacing: 10.0) {
                 Text("Transaction Log")
                     .font(.title)
                     .multilineTextAlignment(.leading)
-            }
-            TransactionHistory(transactions:userData.transactions)
-            Button(action: {
-                self.confirmingClear = true
-            }) {
-                Text("Clear Log")
-            }
-            .disabled(numTransactions == 0)
-            .padding(.leading)
-            .alert(isPresented:$confirmingClear) {
-                Alert(title: Text(String(format:"Erase %@",TallyUpUtil.pluralize(numTransactions,"transaction",withPlural:"transactions"))), message: Text("This cannot be undone"), primaryButton: .destructive(Text("Erase")) {
-                    do { try self.userData.clearTransactions() } catch {}
+
+                TransactionHistory(transactions:userData.transactions)
+                    .padding(.horizontal)
+
+                Button(action: {
+                    self.confirmingClear = true
+                }) {
+                    Text("Clear Log")
+                }
+                .disabled(numTransactions == 0)
+                .padding(.leading, 6.0)
+                .alert(isPresented:$confirmingClear) {
+                    Alert(title: Text(String(format:"Erase %@",TallyUpUtil.pluralize(numTransactions,"transaction",withPlural:"transactions"))), message: Text("This cannot be undone"), primaryButton: .destructive(Text("Erase")) {
+                        do { try self.userData.clearTransactions() } catch {}
                     }, secondaryButton: .cancel())
+                }
             }
         }
         .animation(.default)

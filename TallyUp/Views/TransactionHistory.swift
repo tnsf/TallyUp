@@ -10,12 +10,15 @@ import SwiftUI
 
 struct TransactionHistory: View {
     var transactions : [Transaction]
-
+    
     var body: some View {
-        List(transactions.sorted(by:>)) { transaction in
-            TransactionRow(transaction:transaction)
+        ScrollView {
+            VStack {
+                ForEach(transactions.sorted(by:>)) {
+                    TransactionRow(transaction:$0)
+                }
+            }
         }
-        .listStyle(PlainListStyle())
     }
 }
 

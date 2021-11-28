@@ -50,8 +50,9 @@ final class UserData : ObservableObject, Codable {
         do { try restore() } catch {}
     }
     
-    init(balance:Int = 0,currentTicks:Int = 0) {
+    init(balance:Int = 0,currentTicks:Int = 0, initialTransactions:[Transaction] = [Transaction]()) {
         totalTicks = balance
+        transactions = initialTransactions
     }
     
     // Persistence
