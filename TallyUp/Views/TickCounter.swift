@@ -36,7 +36,7 @@ struct TickCounter: View, TickCountable {
                             Spacer()
                         }
                         .padding(.horizontal,3.0)
-                        .padding(.vertical)
+                        .padding(.vertical,6.0)
                         .background(unsavedTicks == 0 ? Color.clear : Color.gray)
                         .foregroundColor(unsavedTicks == 0 ? .gray : .white)
                         .cornerRadius(8.0)
@@ -49,8 +49,8 @@ struct TickCounter: View, TickCountable {
                             Text(unsavedTicks == 0 ? "Apply" : "Apply " + TallyUpUtil.pluralize($unsavedTicks.wrappedValue, "tick", withPlural:"ticks"))
                             Spacer()
                         }
-                        .padding(.horizontal, 6.0)
-                        .padding(.vertical)
+                        .padding(.horizontal,3.0)
+                        .padding(.vertical,6.0)
                         .background(unsavedTicks == 0 ? Color.clear : /*@START_MENU_TOKEN@*/Color.blue/*@END_MENU_TOKEN@*/)
                         .foregroundColor(unsavedTicks == 0 ? .gray : .white)
                         .cornerRadius(8.0)

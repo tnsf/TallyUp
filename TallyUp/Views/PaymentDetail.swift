@@ -43,7 +43,7 @@ struct PaymentDetail: View, TickCountable {
                         Text("Cancel")
                         Spacer()
                     }
-                    .padding(.vertical)
+                    .padding(.vertical,6.0)
                     .background(Color.blue)
                     .foregroundColor(.white)
                     .cornerRadius(8.0)
@@ -59,7 +59,7 @@ struct PaymentDetail: View, TickCountable {
                             Text("Pay Now")
                             Spacer()
                         }
-                        .padding(.vertical)
+                        .padding(.vertical,6.0)
                         .background(unsavedTicks > 0 ? Color.red : Color.clear)
                         .foregroundColor(unsavedTicks > 0 ? Color.white : Color.gray)
                         .cornerRadius(8.0)
