@@ -9,8 +9,8 @@
 import SwiftUI
 
 struct TickCounter: View, TickCountable {
-    @State var unsavedTicks = UserDefaults.standard.integer(forKey: "TransactionUnsavedTicks")
-    var onApplyChange : ((Int) -> Void)?
+    @State var unsavedTicks : Int16 = Int16(UserDefaults.standard.integer(forKey: "TransactionUnsavedTicks"))
+    var onApplyChange : ((Int16) -> Void)?
 
     // Choose style of clickers: .PlusMinus or .Stepper
     let style : Clicker.Style = .Stepper
@@ -46,7 +46,7 @@ struct TickCounter: View, TickCountable {
                     Button(action:{self.charge()}) {
                         HStack {
                             Spacer()
-                            Text(unsavedTicks == 0 ? "Apply" : "Apply " + TallyUpUtil.pluralize($unsavedTicks.wrappedValue, "tick", withPlural:"ticks"))
+                            Text(unsavedTicks == 0 ? "Apply" : "Apply " + TallyUpUtil.pluralize(Int($unsavedTicks.wrappedValue), "tick", withPlural:"ticks"))
                             Spacer()
                         }
                         .padding(.horizontal,3.0)
@@ -66,17 +66,17 @@ struct TickCounter: View, TickCountable {
     }
     
     // Helpers
-    func updateCount(_ ticks:Int) {
+    func updateCount(_ ticks:Int16) {
         unsavedTicks = ticks;
         // Save tick count in user preferences
         UserDefaults.standard.set(self.unsavedTicks, forKey: "TransactionUnsavedTicks")
     }
     
     // Actions
-    func increment(_ numTicks:Int = 1) {
+    func increment(_ numTicks:Int16 = 1) {
         updateCount(unsavedTicks + numTicks)
     }
-    func decrement(_ numTicks:Int = 1) {
+    func decrement(_ numTicks:Int16 = 1) {
         let finalNumTicks = unsavedTicks-numTicks
         if (finalNumTicks > 0)
         {

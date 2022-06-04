@@ -13,11 +13,11 @@ struct ContentView: View {
 
     @State var payingUp = false
     @State var confirmingClear = false
-    @State var unpaidTicks : Int = 0
+    @State var unpaidTicks : Int16 = 0
 
     // Content for "current value" display
 
-    var displayedTicks : Int {
+    var displayedTicks : Int16 {
         return payingUp ? unpaidTicks : userData.totalTicks
     }
     var dollarBalance : String {
@@ -33,7 +33,7 @@ struct ContentView: View {
     var balanceSummary : String {
         if (payingUp)
         {
-            let resulting = userData.totalTicks+unpaidTicks
+            let resulting = userData.totalTicks + unpaidTicks
             let dollars = TallyUpUtil.dollarText(ticks: abs(resulting))
             let wrapped = (resulting < 0) ? "(\(dollars))" : dollars
             return "Resulting balance: \(wrapped)"
@@ -46,7 +46,7 @@ struct ContentView: View {
         }
     }
     var summaryColor : Color {
-        return payingUp ? TallyUpUtil.balanceColor(ticks:userData.totalTicks+unpaidTicks)
+        return payingUp ? TallyUpUtil.balanceColor(ticks:userData.totalTicks + unpaidTicks)
                         : TallyUpUtil.balanceColor(ticks:userData.totalTicks)
     }
 
@@ -135,7 +135,7 @@ struct ContentView: View {
 
                     PaymentDetail(tickBalance: self.userData.totalTicks,
                                   unsavedTicks: self.$unpaidTicks,
-                                  onApplyChange: { (increment:Int) -> Void in
+                                  onApplyChange: { (increment:Int16) -> Void in
                                     do {
                                         try self.userData.credit(ticks:increment)
                                     }
@@ -154,7 +154,7 @@ struct ContentView: View {
                         .font(.title)
                         .multilineTextAlignment(.leading)
 
-                    TickCounter(onApplyChange: { (increment:Int) -> Void in
+                    TickCounter(onApplyChange: { (increment:Int16) -> Void in
                         do {
                             try self.userData.charge(ticks:increment)
                         } catch {}

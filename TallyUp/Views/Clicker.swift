@@ -9,8 +9,8 @@
 import SwiftUI
 
 protocol TickCountable {
-    func increment(_ numTicks:Int)
-    func decrement(_ numTicks:Int)
+    func increment(_ numTicks:Int16)
+    func decrement(_ numTicks:Int16)
 }
 
 struct Clicker: View {
@@ -19,7 +19,7 @@ struct Clicker: View {
     }
     
     var counter : TickCountable
-    var numTicks = 1
+    var numTicks : Int16 = 1
     var style : Style = .Stepper
     var showTicks : Bool = true
     

@@ -9,9 +9,9 @@
 import SwiftUI
 
 struct PaymentDetail: View, TickCountable {
-    var tickBalance : Int
-    @Binding var unsavedTicks : Int
-    var onApplyChange : ((Int) -> Void)?
+    var tickBalance : Int16
+    @Binding var unsavedTicks : Int16
+    var onApplyChange : ((Int16) -> Void)?
     var onDismiss : (() -> Void)?
     
     
@@ -73,10 +73,10 @@ struct PaymentDetail: View, TickCountable {
     }
     
     // Actions
-    func increment(_ numTicks:Int) {
+    func increment(_ numTicks:Int16) {
         unsavedTicks += numTicks
     }
-    func decrement(_ numTicks:Int) {
+    func decrement(_ numTicks:Int16) {
         let finalNumTicks = unsavedTicks-numTicks
         if (finalNumTicks > 0)
         {
@@ -95,7 +95,7 @@ struct PaymentDetail: View, TickCountable {
 
 struct PaymentDetail_Previews: PreviewProvider {
     @State static var showingPayment = false
-    @State static var ticksPaying : Int = 0
+    @State static var ticksPaying : Int16 = 0
 
     static var previews: some View {
         PaymentDetail(tickBalance: 17,unsavedTicks:$ticksPaying)

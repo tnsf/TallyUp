@@ -14,15 +14,15 @@ struct TallyUpUtil {
         return String(format:"%d %@", count, (count == 1 ? singular : plural))
     }
 
-    static func dollarText(ticks:Int) -> String {
+    static func dollarText(ticks:Int16) -> String {
         return String(format:"$%0.2f",dollarAmount(ticks:ticks))
     }
 
-    static func dollarAmount(ticks:Int) -> Double {
+    static func dollarAmount(ticks:Int16) -> Double {
         return Double(ticks)*0.5
     }
     
-    static func balanceColor(ticks:Int) -> Color {
+    static func balanceColor(ticks:Int16) -> Color {
         return ticks < 0 ? .red : .green
     }
 

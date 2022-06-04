@@ -14,7 +14,7 @@ struct Transaction : Identifiable, Comparable, Codable
     
     var date : Date
     var type : TransactionType
-    var amount : Int
+    var amount : Int16
     
     enum TransactionType : String, Codable
     {
@@ -27,7 +27,7 @@ struct Transaction : Identifiable, Comparable, Codable
         case Credit
     }
     
-    init(date:Date = Date(), type:TransactionType = .Charge, amount:Int = 0)
+    init(date:Date = Date(), type:TransactionType = .Charge, amount:Int16 = 0)
     {
         self.id = UUID()
         self.date = date
@@ -41,7 +41,7 @@ struct Transaction : Identifiable, Comparable, Codable
 }
 
 final class UserData : ObservableObject, Codable {
-    @Published var totalTicks = 0
+    @Published var totalTicks : Int16 = 0
     @Published var transactions : [Transaction] = [Transaction]()
     
     var failedToInit = false
@@ -50,7 +50,7 @@ final class UserData : ObservableObject, Codable {
         do { try restore() } catch {}
     }
     
-    init(balance:Int = 0,currentTicks:Int = 0, initialTransactions:[Transaction] = [Transaction]()) {
+    init(balance:Int16 = 0,currentTicks:Int = 0, initialTransactions:[Transaction] = [Transaction]()) {
         totalTicks = balance
         transactions = initialTransactions
     }
@@ -69,7 +69,7 @@ final class UserData : ObservableObject, Codable {
     required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
-        totalTicks = try values.decode(Int.self, forKey: .totalTicks)
+        totalTicks = try values.decode(Int16.self, forKey: .totalTicks)
         transactions = try values.decode([Transaction].self, forKey: .transactions)
     }
     
@@ -116,7 +116,7 @@ final class UserData : ObservableObject, Codable {
     
     // Manipulate user data
 
-    func charge(ticks:Int) throws {
+    func charge(ticks:Int16) throws {
         if (ticks != 0)
         {
             totalTicks -= ticks
@@ -124,13 +124,13 @@ final class UserData : ObservableObject, Codable {
             try save()
         }
     }
-    func credit(ticks:Int) throws {
+    func credit(ticks:Int16) throws {
         totalTicks += ticks
         transactions.append(Transaction(date:Date(),type:.Credit,amount:ticks))
         try save()
     }
     func credit(dollars:Double) throws {
-        try credit(ticks:Int(dollars*2.0+0.5))
+        try credit(ticks:Int16(dollars*2.0+0.5))
     }
     func clearTransactions() throws {
         transactions = []
