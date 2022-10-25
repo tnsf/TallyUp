@@ -50,9 +50,12 @@ struct Clicker: View {
                 label:{
                     HStack {
                         Spacer()
-                        Text(self.label)
-                            .font(.title)
-                            .multilineTextAlignment(.center)
+                        Button(action: {self.increment()})
+                        {
+                            Text(self.label)
+                                .font(.title)
+                                .multilineTextAlignment(.center)
+                        }
                         Spacer()
                     }
             })
