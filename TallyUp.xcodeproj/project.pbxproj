@@ -418,7 +418,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"TallyUp/Preview Content\"";
-				DEVELOPMENT_TEAM = J9L4PW5J66;
+				DEVELOPMENT_TEAM = 898FCZQUSP;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = TallyUp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -441,7 +441,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"TallyUp/Preview Content\"";
-				DEVELOPMENT_TEAM = J9L4PW5J66;
+				DEVELOPMENT_TEAM = 898FCZQUSP;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = TallyUp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
