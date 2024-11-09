@@ -130,7 +130,7 @@ final class UserData : ObservableObject, Codable {
         try save()
     }
     func credit(dollars:Double) throws {
-        try credit(ticks:Int16(dollars*2.0+0.5))
+        try credit(ticks:Int16(dollars*Double(TallyUpUtil.ticksPerDollar())+0.5))
     }
     func clearTransactions() throws {
         transactions = []

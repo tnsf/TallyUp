@@ -19,11 +19,14 @@ struct TallyUpUtil {
     }
 
     static func dollarAmount(ticks:Int16) -> Double {
-        return Double(ticks)*0.5
+        return Double(ticks)/Double(ticksPerDollar())
     }
     
     static func balanceColor(ticks:Int16) -> Color {
         return ticks < 0 ? .red : .green
     }
 
+    static func ticksPerDollar() -> Int16 {
+        return 2
+    }
 }
