@@ -1,5 +1,5 @@
 //
-//  ChargeTicker.swift
+//  CentCounter.swift
 //  TallyUp
 //
 //  Created by Graeme Hiebert on 2020-01-02.
@@ -8,8 +8,8 @@
 
 import SwiftUI
 
-struct TickCounter: View, TickCountable {
-    @State var unsavedTicks : Int16 = Int16(UserDefaults.standard.integer(forKey: "TransactionUnsavedTicks"))
+struct CentCounter: View, CentCountable {
+    @State var unsavedCents : Int16 = Int16(UserDefaults.standard.integer(forKey: "TransactionUnsavedCents"))
     var onApplyChange : ((Int16) -> Void)?
 
     // Choose style of clickers: .PlusMinus or .Stepper
@@ -39,27 +39,27 @@ struct TickCounter: View, TickCountable {
                         }
                         .padding(.horizontal,3.0)
                         .padding(.vertical,6.0)
-                        .background(unsavedTicks == 0 ? Color.clear : Color.gray)
-                        .foregroundColor(unsavedTicks == 0 ? .gray : .white)
+                        .background(unsavedCents == 0 ? Color.clear : Color.gray)
+                        .foregroundColor(unsavedCents == 0 ? .gray : .white)
                         .cornerRadius(8.0)
                     }
-                    .disabled(unsavedTicks == 0)
+                    .disabled(unsavedCents == 0)
                     
                     Button(action:{self.charge()}) {
                         HStack {
                             Spacer()
-                            Text(unsavedTicks == 0 ? "Charge" : "Charge \(TallyUpUtil.dollarText(ticks:Int16($unsavedTicks.wrappedValue)))")
+                            Text(unsavedCents == 0 ? "Charge" : "Charge \(TallyUpUtil.dollarText(cents:Int16($unsavedCents.wrappedValue)))")
                             Spacer()
                         }
                         .padding(.horizontal,3.0)
                         .padding(.vertical,6.0)
-                        .background(unsavedTicks == 0 ? Color.clear : /*@START_MENU_TOKEN@*/Color.blue/*@END_MENU_TOKEN@*/)
-                        .foregroundColor(unsavedTicks == 0 ? .gray : .white)
+                        .background(unsavedCents == 0 ? Color.clear : /*@START_MENU_TOKEN@*/Color.blue/*@END_MENU_TOKEN@*/)
+                        .foregroundColor(unsavedCents == 0 ? .gray : .white)
                         .cornerRadius(8.0)
                         .clipped()
-                        .disabled(unsavedTicks==0)
+                        .disabled(unsavedCents==0)
                     }
-                    .disabled(unsavedTicks == 0)
+                    .disabled(unsavedCents == 0)
                 }
                 .padding(.horizontal, 6.0)
                 .padding(.top, 8.0)
@@ -68,21 +68,21 @@ struct TickCounter: View, TickCountable {
     }
     
     // Helpers
-    func updateCount(_ ticks:Int16) {
-        unsavedTicks = ticks;
-        // Save tick count in user preferences
-        UserDefaults.standard.set(self.unsavedTicks, forKey: "TransactionUnsavedTicks")
+    func updateCount(_ cents:Int16) {
+        unsavedCents = cents;
+        // Save cent count in user preferences
+        UserDefaults.standard.set(self.unsavedCents, forKey: "TransactionUnsavedCents")
     }
     
     // Actions
-    func increment(_ numTicks:Int16 = 1) {
-        updateCount(unsavedTicks + numTicks)
+    func increment(_ numCents:Int16 = 1) {
+        updateCount(unsavedCents + numCents)
     }
-    func decrement(_ numTicks:Int16 = 1) {
-        let finalNumTicks = unsavedTicks-numTicks
-        if (finalNumTicks > 0)
+    func decrement(_ numCents:Int16 = 1) {
+        let finalNumCents = unsavedCents-numCents
+        if (finalNumCents > 0)
         {
-            updateCount(finalNumTicks)
+            updateCount(finalNumCents)
         }
         else
         {
@@ -95,16 +95,16 @@ struct TickCounter: View, TickCountable {
     }
     func charge()
     {
-        if unsavedTicks > 0
+        if unsavedCents > 0
         {
-            onApplyChange?(unsavedTicks)
+            onApplyChange?(unsavedCents)
         }
         clear()
     }
 }
 
-struct TickCounter_Previews: PreviewProvider {
+struct CentCounter_Previews: PreviewProvider {
     static var previews: some View {
-        TickCounter(unsavedTicks:3)
+        CentCounter(unsavedCents:3)
     }
 }

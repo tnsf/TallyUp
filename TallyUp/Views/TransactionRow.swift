@@ -19,7 +19,7 @@ struct TransactionRow: View {
     }
     func amount() -> String {
         let sign = (transaction.type == .Charge) ? "-" : "+";
-        return sign + TallyUpUtil.dollarText(ticks:abs(transaction.amount))
+        return sign + TallyUpUtil.dollarText(cents:abs(transaction.amount))
     }
     
     var body: some View {

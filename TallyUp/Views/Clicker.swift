@@ -8,9 +8,9 @@
 
 import SwiftUI
 
-protocol TickCountable {
-    func increment(_ numTicks:Int16)
-    func decrement(_ numTicks:Int16)
+protocol CentCountable {
+    func increment(_ numCents:Int16)
+    func decrement(_ numCents:Int16)
 }
 
 struct Clicker: View {
@@ -18,18 +18,11 @@ struct Clicker: View {
         case Stepper, PlusMinus        
     }
     
-    var counter : TickCountable
-    var numTicks : Int16 = 1
+    var counter : CentCountable
+    var numCents : Int16 = 1
     var style : Style = .Stepper
 
-    var label: String { "\(TallyUpUtil.dollarText(ticks:numTicks))" }
-
-    init(counter:TickCountable, numCents:Int16, style:Style = .Stepper)
-    {
-        self.counter = counter
-        self.numTicks = numCents * TallyUpUtil.ticksPerDollar() / 100
-        self.style = style
-    }
+    var label: String { "\(TallyUpUtil.dollarText(cents:numCents))" }
 
     var plusMinusView : some View {
         HStack {
@@ -81,16 +74,16 @@ struct Clicker: View {
     
     // Actions
     func increment() -> Void {
-        counter.increment(numTicks)
+        counter.increment(numCents)
     }
     func decrement() -> Void {
-        counter.decrement(numTicks)
+        counter.decrement(numCents)
     }
     
 }
 
 struct Clicker_Previews: PreviewProvider {
-    static var counter = TickCounter()
+    static var counter = CentCounter()
     
     static var previews: some View {
         Group {

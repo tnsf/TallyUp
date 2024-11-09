@@ -8,9 +8,9 @@
 
 import SwiftUI
 
-struct PaymentDetail: View, TickCountable {
-    var tickBalance : Int16
-    @Binding var unsavedTicks : Int16
+struct PaymentDetail: View, CentCountable {
+    var centBalance : Int16
+    @Binding var unsavedCents : Int16
     var onApplyChange : ((Int16) -> Void)?
     var onDismiss : (() -> Void)?
     
@@ -19,8 +19,8 @@ struct PaymentDetail: View, TickCountable {
     let style : Clicker.Style = .Stepper
     
     var balanceSummary : String {
-        let resulting = tickBalance+unsavedTicks
-        let dollars = TallyUpUtil.dollarText(ticks: abs(resulting))
+        let resulting = centBalance+unsavedCents
+        let dollars = TallyUpUtil.dollarText(cents: abs(resulting))
         let wrapped = (resulting < 0) ? "(\(dollars))" : dollars
         return "Resulting balance: \(wrapped)"
     }
@@ -53,7 +53,7 @@ struct PaymentDetail: View, TickCountable {
                 }
                 
                 Button(action: {
-                    self.onApplyChange?(self.unsavedTicks)
+                    self.onApplyChange?(self.unsavedCents)
                     self.onDismiss?()
                 } ) {
                         HStack {
@@ -62,12 +62,12 @@ struct PaymentDetail: View, TickCountable {
                             Spacer()
                         }
                         .padding(.vertical,6.0)
-                        .background(unsavedTicks > 0 ? Color.red : Color.clear)
-                        .foregroundColor(unsavedTicks > 0 ? Color.white : Color.gray)
+                        .background(unsavedCents > 0 ? Color.red : Color.clear)
+                        .foregroundColor(unsavedCents > 0 ? Color.white : Color.gray)
                         .cornerRadius(8.0)
                         .padding(.horizontal,3.0)
                 }
-                .disabled(unsavedTicks==0)
+                .disabled(unsavedCents==0)
             }
             .padding(.vertical,15.0)
         }
@@ -75,31 +75,31 @@ struct PaymentDetail: View, TickCountable {
     }
     
     // Actions
-    func increment(_ numTicks:Int16) {
-        unsavedTicks += numTicks
+    func increment(_ numCents:Int16) {
+        unsavedCents += numCents
     }
-    func decrement(_ numTicks:Int16) {
-        let finalNumTicks = unsavedTicks-numTicks
-        if (finalNumTicks > 0)
+    func decrement(_ numCents:Int16) {
+        let finalNumCents = unsavedCents-numCents
+        if (finalNumCents > 0)
         {
-            unsavedTicks = finalNumTicks
+            unsavedCents = finalNumCents
         }
         else
         {
-            unsavedTicks = 0
+            unsavedCents = 0
         }
     }
     func clear()
     {
-        unsavedTicks = 0
+        unsavedCents = 0
     }
 }
 
 struct PaymentDetail_Previews: PreviewProvider {
     @State static var showingPayment = false
-    @State static var ticksPaying : Int16 = 0
+    @State static var centsPaying : Int16 = 0
 
     static var previews: some View {
-        PaymentDetail(tickBalance: 17,unsavedTicks:$ticksPaying)
+        PaymentDetail(centBalance: 17,unsavedCents:$centsPaying)
     }
 }

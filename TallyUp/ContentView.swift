@@ -13,19 +13,19 @@ struct ContentView: View {
 
     @State var payingUp = false
     @State var confirmingClear = false
-    @State var unpaidTicks : Int16 = 0
+    @State var unpaidCents : Int16 = 0
 
     // Content for "current value" display
 
-    var displayedTicks : Int16 {
-        return payingUp ? unpaidTicks : userData.totalCents
+    var displayedCents : Int16 {
+        return payingUp ? unpaidCents : userData.totalCents
     }
     var dollarBalance : String {
-        let absTicks = abs(displayedTicks)
-        return "\(TallyUpUtil.dollarText(ticks:absTicks))"
+        let absCents = abs(displayedCents)
+        return "\(TallyUpUtil.dollarText(cents:absCents))"
     }
     var balanceColor : Color {
-        return payingUp ? Color.blue : TallyUpUtil.balanceColor(ticks:userData.totalCents)
+        return payingUp ? Color.blue : TallyUpUtil.balanceColor(cents:userData.totalCents)
     }
 
     // Content for summary line of current value display
@@ -33,8 +33,8 @@ struct ContentView: View {
     var balanceSummary : String {
         if (payingUp)
         {
-            let resulting = userData.totalCents + unpaidTicks
-            let dollars = TallyUpUtil.dollarText(ticks: abs(resulting))
+            let resulting = userData.totalCents + unpaidCents
+            let dollars = TallyUpUtil.dollarText(cents: abs(resulting))
             let wrapped = (resulting < 0) ? "(\(dollars))" : dollars
             return "Resulting balance: \(wrapped)"
         }
@@ -44,8 +44,8 @@ struct ContentView: View {
         }
     }
     var summaryColor : Color {
-        return payingUp ? TallyUpUtil.balanceColor(ticks:userData.totalCents + unpaidTicks)
-                        : TallyUpUtil.balanceColor(ticks:userData.totalCents)
+        return payingUp ? TallyUpUtil.balanceColor(cents:userData.totalCents + unpaidCents)
+                        : TallyUpUtil.balanceColor(cents:userData.totalCents)
     }
 
     var summaryButton : some View {
@@ -60,7 +60,7 @@ struct ContentView: View {
             text = "Even Up"
             foreground = userData.totalCents >= 0 ? .gray : .white
             background = userData.totalCents >= 0 ? .clear : .blue
-            onClick = {self.unpaidTicks = -self.userData.totalCents}
+            onClick = {self.unpaidCents = -self.userData.totalCents}
             disabled = (userData.totalCents >= 0)
         }
         else
@@ -69,7 +69,7 @@ struct ContentView: View {
             foreground = userData.totalCents < 0 ? .white : .blue
             background = userData.totalCents < 0 ? .red : .clear
             onClick = {
-                self.unpaidTicks = 0
+                self.unpaidCents = 0
                 self.payingUp = true
             }
             disabled = false
@@ -131,8 +131,8 @@ struct ContentView: View {
                         .font(.title)
                         .multilineTextAlignment(.leading)
 
-                    PaymentDetail(tickBalance: self.userData.totalCents,
-                                  unsavedTicks: self.$unpaidTicks,
+                    PaymentDetail(centBalance: self.userData.totalCents,
+                                  unsavedCents: self.$unpaidCents,
                                   onApplyChange: { (increment:Int16) -> Void in
                                     do {
                                         try self.userData.credit(cents:increment)
@@ -152,7 +152,7 @@ struct ContentView: View {
                         .font(.title)
                         .multilineTextAlignment(.leading)
 
-                    TickCounter(onApplyChange: { (increment:Int16) -> Void in
+                    CentCounter(onApplyChange: { (increment:Int16) -> Void in
                         do {
                             try self.userData.charge(cents:increment)
                         } catch {}
