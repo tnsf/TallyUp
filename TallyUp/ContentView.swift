@@ -40,9 +40,7 @@ struct ContentView: View {
         }
         else
         {
-            let absTicks = abs(userData.totalTicks)
-            let direction = (userData.totalTicks < 0) ? "owing" : "credit"
-            return absTicks == 0 ? "" : "(\(absTicks) ticks \(direction))"
+            return (userData.totalTicks < 0) ? "owing" : "credit"
         }
     }
     var summaryColor : Color {

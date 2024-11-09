@@ -20,9 +20,9 @@ struct TickCounter: View, TickCountable {
             // Add clickers for one, two, four ticks.
             
             VStack(spacing:12.0) {
-                Clicker(counter:self, numTicks:1, style:style)
-                Clicker(counter:self, numTicks:2, style:style)
-                Clicker(counter:self, numTicks:4, style:style)
+                Clicker(counter:self, numCents:50, style:style)
+                Clicker(counter:self, numCents:100, style:style)
+                Clicker(counter:self, numCents:200, style:style)
             }
             
             VStack(alignment: .trailing) {                
@@ -46,7 +46,7 @@ struct TickCounter: View, TickCountable {
                     Button(action:{self.charge()}) {
                         HStack {
                             Spacer()
-                            Text(unsavedTicks == 0 ? "Apply" : "Apply " + TallyUpUtil.pluralize(Int($unsavedTicks.wrappedValue), "tick", withPlural:"ticks"))
+                            Text(unsavedTicks == 0 ? "Charge" : "Charge \(TallyUpUtil.dollarText(ticks:Int16($unsavedTicks.wrappedValue)))")
                             Spacer()
                         }
                         .padding(.horizontal,3.0)

@@ -21,11 +21,16 @@ struct Clicker: View {
     var counter : TickCountable
     var numTicks : Int16 = 1
     var style : Style = .Stepper
-    var showTicks : Bool = true
-    
-    var labelTicks : String { showTicks ? "\(numTicks) - " : ""}
-    var label: String { "\(labelTicks)\(TallyUpUtil.dollarText(ticks:numTicks))" }
-    
+
+    var label: String { "\(TallyUpUtil.dollarText(ticks:numTicks))" }
+
+    init(counter:TickCountable, numCents:Int16, style:Style = .Stepper)
+    {
+        self.counter = counter
+        self.numTicks = numCents * TallyUpUtil.ticksPerDollar() / 100
+        self.style = style
+    }
+
     var plusMinusView : some View {
         HStack {
             Button(action: {self.decrement()}) {
@@ -89,8 +94,8 @@ struct Clicker_Previews: PreviewProvider {
     
     static var previews: some View {
         Group {
-            Clicker(counter:self.counter, numTicks:1, style:.PlusMinus)
-            Clicker(counter:self.counter, numTicks:2)
+            Clicker(counter:self.counter, numCents:50, style:.PlusMinus)
+            Clicker(counter:self.counter, numCents:100)
         }
     }
 }

@@ -29,11 +29,11 @@ struct PaymentDetail: View, TickCountable {
         VStack(alignment:.leading,spacing:0.0) {
                         
             VStack(spacing:12.0) {
-                Clicker(counter:self, numTicks:40, style:style, showTicks:false)
-                Clicker(counter:self, numTicks:10, style:style, showTicks:false)
-                Clicker(counter:self, numTicks:4, style:style, showTicks:false)
-                Clicker(counter:self, numTicks:2, style:style, showTicks:false)
-                Clicker(counter:self, numTicks:1, style:style, showTicks:false)
+                Clicker(counter:self, numCents:2000, style:style)
+                Clicker(counter:self, numCents:500, style:style)
+                Clicker(counter:self, numCents:200, style:style)
+                Clicker(counter:self, numCents:100, style:style)
+                Clicker(counter:self, numCents:50, style:style)
             }
             
             HStack(spacing:2.0) {
