@@ -17,10 +17,12 @@ struct TickCounter: View, TickCountable {
     
     var body: some View {
         VStack(spacing:0.0) {
-            // Add clickers for one, two, four ticks.
-            
+            // Add clickers for $0.25, $0.50, $0.75, $1.00, $2.00
+
             VStack(spacing:12.0) {
+                Clicker(counter:self, numCents:25, style:style)
                 Clicker(counter:self, numCents:50, style:style)
+                Clicker(counter:self, numCents:75, style:style)
                 Clicker(counter:self, numCents:100, style:style)
                 Clicker(counter:self, numCents:200, style:style)
             }

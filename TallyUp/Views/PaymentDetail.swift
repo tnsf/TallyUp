@@ -28,6 +28,8 @@ struct PaymentDetail: View, TickCountable {
     var body: some View {
         VStack(alignment:.leading,spacing:0.0) {
                         
+            // Add clickers for $20.00, $5.00, $2.00, $1.00, $0.50
+
             VStack(spacing:12.0) {
                 Clicker(counter:self, numCents:2000, style:style)
                 Clicker(counter:self, numCents:500, style:style)

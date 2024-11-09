@@ -27,6 +27,6 @@ struct TallyUpUtil {
     }
 
     static func ticksPerDollar() -> Int16 {
-        return 2
+        return 100
     }
 }
