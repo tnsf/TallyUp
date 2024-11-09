@@ -18,14 +18,14 @@ struct ContentView: View {
     // Content for "current value" display
 
     var displayedTicks : Int16 {
-        return payingUp ? unpaidTicks : userData.totalTicks
+        return payingUp ? unpaidTicks : userData.totalCents
     }
     var dollarBalance : String {
         let absTicks = abs(displayedTicks)
         return "\(TallyUpUtil.dollarText(ticks:absTicks))"
     }
     var balanceColor : Color {
-        return payingUp ? Color.blue : TallyUpUtil.balanceColor(ticks:userData.totalTicks)
+        return payingUp ? Color.blue : TallyUpUtil.balanceColor(ticks:userData.totalCents)
     }
 
     // Content for summary line of current value display
@@ -33,19 +33,19 @@ struct ContentView: View {
     var balanceSummary : String {
         if (payingUp)
         {
-            let resulting = userData.totalTicks + unpaidTicks
+            let resulting = userData.totalCents + unpaidTicks
             let dollars = TallyUpUtil.dollarText(ticks: abs(resulting))
             let wrapped = (resulting < 0) ? "(\(dollars))" : dollars
             return "Resulting balance: \(wrapped)"
         }
         else
         {
-            return (userData.totalTicks < 0) ? "owing" : "credit"
+            return (userData.totalCents < 0) ? "owing" : "credit"
         }
     }
     var summaryColor : Color {
-        return payingUp ? TallyUpUtil.balanceColor(ticks:userData.totalTicks + unpaidTicks)
-                        : TallyUpUtil.balanceColor(ticks:userData.totalTicks)
+        return payingUp ? TallyUpUtil.balanceColor(ticks:userData.totalCents + unpaidTicks)
+                        : TallyUpUtil.balanceColor(ticks:userData.totalCents)
     }
 
     var summaryButton : some View {
@@ -58,16 +58,16 @@ struct ContentView: View {
         if (payingUp)
         {
             text = "Even Up"
-            foreground = userData.totalTicks >= 0 ? .gray : .white
-            background = userData.totalTicks >= 0 ? .clear : .blue
-            onClick = {self.unpaidTicks = -self.userData.totalTicks}
-            disabled = (userData.totalTicks >= 0)
+            foreground = userData.totalCents >= 0 ? .gray : .white
+            background = userData.totalCents >= 0 ? .clear : .blue
+            onClick = {self.unpaidTicks = -self.userData.totalCents}
+            disabled = (userData.totalCents >= 0)
         }
         else
         {
             text = "Pay"
-            foreground = userData.totalTicks < 0 ? .white : .blue
-            background = userData.totalTicks < 0 ? .red : .clear
+            foreground = userData.totalCents < 0 ? .white : .blue
+            background = userData.totalCents < 0 ? .red : .clear
             onClick = {
                 self.unpaidTicks = 0
                 self.payingUp = true
@@ -131,11 +131,11 @@ struct ContentView: View {
                         .font(.title)
                         .multilineTextAlignment(.leading)
 
-                    PaymentDetail(tickBalance: self.userData.totalTicks,
+                    PaymentDetail(tickBalance: self.userData.totalCents,
                                   unsavedTicks: self.$unpaidTicks,
                                   onApplyChange: { (increment:Int16) -> Void in
                                     do {
-                                        try self.userData.credit(ticks:increment)
+                                        try self.userData.credit(cents:increment)
                                     }
                                     catch {} },
                                   onDismiss: { self.payingUp = false } )
@@ -154,7 +154,7 @@ struct ContentView: View {
 
                     TickCounter(onApplyChange: { (increment:Int16) -> Void in
                         do {
-                            try self.userData.charge(ticks:increment)
+                            try self.userData.charge(cents:increment)
                         } catch {}
                     } )
                     }
@@ -194,7 +194,7 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-          .environmentObject(UserData(balance:-33,currentTicks:12,initialTransactions:[Transaction(date:Date(timeIntervalSinceNow: TimeInterval(15.9e6)),type:.Charge,amount:1),
+            .environmentObject(UserData(balance:-33,initialTransactions:[Transaction(date:Date(timeIntervalSinceNow: TimeInterval(15.9e6)),type:.Charge,amount:1),
                                                                                   Transaction(date:Date(),type:.Charge,amount:1)]))
     }
 }

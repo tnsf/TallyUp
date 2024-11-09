@@ -41,7 +41,7 @@ struct Transaction : Identifiable, Comparable, Codable
 }
 
 final class UserData : ObservableObject, Codable {
-    @Published var totalTicks : Int16 = 0
+    @Published var totalCents : Int16 = 0
     @Published var transactions : [Transaction] = [Transaction]()
     
     var failedToInit = false
@@ -50,14 +50,14 @@ final class UserData : ObservableObject, Codable {
         do { try restore() } catch {}
     }
     
-    init(balance:Int16 = 0,currentTicks:Int = 0, initialTransactions:[Transaction] = [Transaction]()) {
-        totalTicks = balance
+    init(balance:Int16 = 0, initialTransactions:[Transaction] = [Transaction]()) {
+        totalCents = balance
         transactions = initialTransactions
     }
     
     // Persistence
     enum CodingKeys: String, CodingKey {
-        case version, totalTicks, transactions
+        case totalTicks, totalCents, transactions
     }
     
     func docDirectory() -> URL {
@@ -68,15 +68,31 @@ final class UserData : ObservableObject, Codable {
 
     required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        
-        totalTicks = try values.decode(Int16.self, forKey: .totalTicks)
-        transactions = try values.decode([Transaction].self, forKey: .transactions)
+
+        self.transactions = try values.decode([Transaction].self, forKey: .transactions)
+
+        // New files make "totalCents". Old files had "totalTicks", repreenting either $0.50 ticks.
+        // Here we math our way out of ticks on import
+        let totalCents = try values.decodeIfPresent(Int16.self, forKey: .totalCents)
+        if (totalCents == nil)
+        {
+            self.totalCents = (try values.decodeIfPresent(Int16.self, forKey: .totalTicks) ?? 0) * 50
+            transactions = transactions.map {
+                var t = $0
+                t.amount *= 50
+                return t
+            }
+        }
+        else
+        {
+            self.totalCents = totalCents!
+        }
     }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        
-        try container.encode(totalTicks, forKey: .totalTicks)
+
+        try container.encode(totalCents, forKey: .totalCents)
         try container.encode(transactions, forKey: .transactions)
     }
     
@@ -108,7 +124,7 @@ final class UserData : ObservableObject, Codable {
         
         let decoder = JSONDecoder()
         let stored = try decoder.decode(UserData.self, from:json)
-        totalTicks = stored.totalTicks
+        totalCents = stored.totalCents
         transactions = stored.transactions
         
         return true
@@ -116,27 +132,27 @@ final class UserData : ObservableObject, Codable {
     
     // Manipulate user data
 
-    func charge(ticks:Int16) throws {
-        if (ticks != 0)
+    func charge(cents:Int16) throws {
+        if (cents != 0)
         {
-            totalTicks -= ticks
-            transactions.append(Transaction(date:Date(),type:.Charge,amount:-ticks))
+            totalCents -= cents
+            transactions.append(Transaction(date:Date(),type:.Charge,amount:-cents))
             try save()
         }
     }
-    func credit(ticks:Int16) throws {
-        totalTicks += ticks
-        transactions.append(Transaction(date:Date(),type:.Credit,amount:ticks))
+    func credit(cents:Int16) throws {
+        totalCents += cents
+        transactions.append(Transaction(date:Date(),type:.Credit,amount:cents))
         try save()
     }
     func credit(dollars:Double) throws {
-        try credit(ticks:Int16(dollars*Double(TallyUpUtil.ticksPerDollar())+0.5))
+        try credit(cents:Int16(dollars * 100.0 + 0.5))
     }
     func clearTransactions() throws {
         transactions = []
         try save()
     }
     func payInFull() throws {
-        try credit(ticks:-1 * totalTicks)
+        try credit(cents:-1 * totalCents)
     }
 }
