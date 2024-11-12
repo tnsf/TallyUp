@@ -9,8 +9,8 @@
 import SwiftUI
 
 protocol CentCountable {
-    func increment(_ numCents:Int16)
-    func decrement(_ numCents:Int16)
+    func increment(_ numCents:Int32)
+    func decrement(_ numCents:Int32)
 }
 
 struct Clicker: View {
@@ -19,7 +19,7 @@ struct Clicker: View {
     }
     
     var counter : CentCountable
-    var numCents : Int16 = 1
+    var numCents : Int32 = 1
     var style : Style = .Stepper
 
     var label: String { "\(TallyUpUtil.dollarText(cents:numCents))" }

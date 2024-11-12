@@ -9,8 +9,8 @@
 import SwiftUI
 
 struct CentCounter: View, CentCountable {
-    @State var unsavedCents : Int16 = Int16(UserDefaults.standard.integer(forKey: "TransactionUnsavedCents"))
-    var onApplyChange : ((Int16) -> Void)?
+    @State var unsavedCents : Int32 = Int32(UserDefaults.standard.integer(forKey: "TransactionUnsavedCents"))
+    var onApplyChange : ((Int32) -> Void)?
 
     // Choose style of clickers: .PlusMinus or .Stepper
     let style : Clicker.Style = .Stepper
@@ -48,7 +48,7 @@ struct CentCounter: View, CentCountable {
                     Button(action:{self.charge()}) {
                         HStack {
                             Spacer()
-                            Text(unsavedCents == 0 ? "Charge" : "Charge \(TallyUpUtil.dollarText(cents:Int16($unsavedCents.wrappedValue)))")
+                            Text(unsavedCents == 0 ? "Charge" : "Charge \(TallyUpUtil.dollarText(cents:Int32($unsavedCents.wrappedValue)))")
                             Spacer()
                         }
                         .padding(.horizontal,3.0)
@@ -68,17 +68,17 @@ struct CentCounter: View, CentCountable {
     }
     
     // Helpers
-    func updateCount(_ cents:Int16) {
+    func updateCount(_ cents:Int32) {
         unsavedCents = cents;
         // Save cent count in user preferences
         UserDefaults.standard.set(self.unsavedCents, forKey: "TransactionUnsavedCents")
     }
     
     // Actions
-    func increment(_ numCents:Int16 = 1) {
+    func increment(_ numCents:Int32 = 1) {
         updateCount(unsavedCents + numCents)
     }
-    func decrement(_ numCents:Int16 = 1) {
+    func decrement(_ numCents:Int32 = 1) {
         let finalNumCents = unsavedCents-numCents
         if (finalNumCents > 0)
         {

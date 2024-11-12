@@ -13,11 +13,11 @@ struct ContentView: View {
 
     @State var payingUp = false
     @State var confirmingClear = false
-    @State var unpaidCents : Int16 = 0
+    @State var unpaidCents : Int32 = 0
 
     // Content for "current value" display
 
-    var displayedCents : Int16 {
+    var displayedCents : Int32 {
         return payingUp ? unpaidCents : userData.totalCents
     }
     var dollarBalance : String {
@@ -133,7 +133,7 @@ struct ContentView: View {
 
                     PaymentDetail(centBalance: self.userData.totalCents,
                                   unsavedCents: self.$unpaidCents,
-                                  onApplyChange: { (increment:Int16) -> Void in
+                                  onApplyChange: { (increment:Int32) -> Void in
                                     do {
                                         try self.userData.credit(cents:increment)
                                     }
@@ -152,7 +152,7 @@ struct ContentView: View {
                         .font(.title)
                         .multilineTextAlignment(.leading)
 
-                    CentCounter(onApplyChange: { (increment:Int16) -> Void in
+                    CentCounter(onApplyChange: { (increment:Int32) -> Void in
                         do {
                             try self.userData.charge(cents:increment)
                         } catch {}

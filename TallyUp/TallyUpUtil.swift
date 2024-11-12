@@ -14,11 +14,11 @@ struct TallyUpUtil {
         return String(format:"%d %@", count, (count == 1 ? singular : plural))
     }
 
-    static func dollarText(cents:Int16) -> String {
+    static func dollarText(cents:Int32) -> String {
         return String(format:"$%0.2f",Double(cents) / 100.0)
     }
 
-    static func balanceColor(cents:Int16) -> Color {
+    static func balanceColor(cents:Int32) -> Color {
         return cents < 0 ? .red : .green
     }
 }

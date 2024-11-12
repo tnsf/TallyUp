@@ -14,7 +14,7 @@ struct Transaction : Identifiable, Comparable, Codable
     
     var date : Date
     var type : TransactionType
-    var amount : Int16
+    var amount : Int32
     
     enum TransactionType : String, Codable
     {
@@ -27,7 +27,7 @@ struct Transaction : Identifiable, Comparable, Codable
         case Credit
     }
     
-    init(date:Date = Date(), type:TransactionType = .Charge, amount:Int16 = 0)
+    init(date:Date = Date(), type:TransactionType = .Charge, amount:Int32 = 0)
     {
         self.id = UUID()
         self.date = date
@@ -41,7 +41,7 @@ struct Transaction : Identifiable, Comparable, Codable
 }
 
 final class UserData : ObservableObject, Codable {
-    @Published var totalCents : Int16 = 0
+    @Published var totalCents : Int32 = 0
     @Published var transactions : [Transaction] = [Transaction]()
     
     var failedToInit = false
@@ -50,7 +50,7 @@ final class UserData : ObservableObject, Codable {
         do { try restore() } catch {}
     }
     
-    init(balance:Int16 = 0, initialTransactions:[Transaction] = [Transaction]()) {
+    init(balance:Int32 = 0, initialTransactions:[Transaction] = [Transaction]()) {
         totalCents = balance
         transactions = initialTransactions
     }
@@ -73,10 +73,10 @@ final class UserData : ObservableObject, Codable {
 
         // New files make "totalCents". Old files had "totalTicks", repreenting either $0.50 ticks.
         // Here we math our way out of ticks on import
-        let totalCents = try values.decodeIfPresent(Int16.self, forKey: .totalCents)
+        let totalCents = try values.decodeIfPresent(Int32.self, forKey: .totalCents)
         if (totalCents == nil)
         {
-            self.totalCents = (try values.decodeIfPresent(Int16.self, forKey: .totalTicks) ?? 0) * 50
+            self.totalCents = (try values.decodeIfPresent(Int32.self, forKey: .totalTicks) ?? 0) * 50
             transactions = transactions.map {
                 var t = $0
                 t.amount *= 50
@@ -132,7 +132,7 @@ final class UserData : ObservableObject, Codable {
     
     // Manipulate user data
 
-    func charge(cents:Int16) throws {
+    func charge(cents:Int32) throws {
         if (cents != 0)
         {
             totalCents -= cents
@@ -140,13 +140,13 @@ final class UserData : ObservableObject, Codable {
             try save()
         }
     }
-    func credit(cents:Int16) throws {
+    func credit(cents:Int32) throws {
         totalCents += cents
         transactions.append(Transaction(date:Date(),type:.Credit,amount:cents))
         try save()
     }
     func credit(dollars:Double) throws {
-        try credit(cents:Int16(dollars * 100.0 + 0.5))
+        try credit(cents:Int32(dollars * 100.0 + 0.5))
     }
     func clearTransactions() throws {
         transactions = []
