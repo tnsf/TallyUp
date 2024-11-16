@@ -77,7 +77,7 @@ final class UserData : ObservableObject, Codable {
         if (totalCents == nil)
         {
             self.totalCents = (try values.decodeIfPresent(Int32.self, forKey: .totalTicks) ?? 0) * 50
-            transactions = transactions.map {
+            self.transactions = self.transactions.map {
                 var t = $0
                 t.amount *= 50
                 return t
@@ -104,7 +104,15 @@ final class UserData : ObservableObject, Codable {
 
         let encoder = JSONEncoder()
         // encoder.outputFormatting = .prettyPrinted
-        
+
+        // Write out dates as an ISO8601 date string (with optional fractional seconds)
+        encoder.dateEncodingStrategy = .custom({date, encoder in
+            var container = encoder.singleValueContainer()
+            let formatter = ISO8601DateFormatter()
+            formatter.formatOptions.insert(.withFractionalSeconds)
+            try container.encode(formatter.string(from: date))
+        })
+
         // Write data to file
         let json =  try encoder.encode(self)
         var file = docDirectory();
@@ -123,6 +131,28 @@ final class UserData : ObservableObject, Codable {
         let json = try Data(contentsOf: file)
         
         let decoder = JSONDecoder()
+
+        // Interpret detes in JSON data either as an ISO8601 date string (with optional
+        // fractional seconds) or a time interval since 2001-01-01T00:00:00Z
+        decoder.dateDecodingStrategy = .custom({decoder in
+            let container = try decoder.singleValueContainer()
+            if let dateString = try? container.decode(String.self) {
+                let fractionalDateFormatter = ISO8601DateFormatter()
+                fractionalDateFormatter.formatOptions.insert(.withFractionalSeconds)
+
+                if let date = fractionalDateFormatter.date(from: dateString) {
+                    return date
+                } else if let date = ISO8601DateFormatter().date(from: dateString) {
+                    return date
+                } else {
+                    throw DecodingError.dataCorruptedError(in: container, debugDescription: "Cannot decode date string \(dateString)")
+                }
+            }
+            else if let dateFloat = try? container.decode(Double.self) {
+                return Date(timeIntervalSinceReferenceDate: dateFloat)
+            }
+            throw DecodingError.dataCorruptedError(in: container, debugDescription: "Cannot decode date value")
+          })
         let stored = try decoder.decode(UserData.self, from:json)
         totalCents = stored.totalCents
         transactions = stored.transactions
